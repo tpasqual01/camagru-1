@@ -27,9 +27,17 @@ font-family: 'Titillium Web', sans-serif;
 	height: 400px;
 	vertical-align: top;
 	margin: 1em;
+	padding: 10px;
 	border: 1px solid #cccccc ;
 }
 #form {
+	display: inline-block;
+	width: 500px;
+	vertical-align: top;
+	/*height: 200px;*/
+	margin: 1em;
+}
+#content {
 	display: inline-block;
 	width: 500px;
 	vertical-align: top;
@@ -55,12 +63,12 @@ h2	{
 	}
 
 @media (max-width: 1200px) {
-	.h2{ font-size: 18px }  /* Maximum font size */
+	h2{ font-size: 18px }  /* Maximum font size */
 	p, td.form { font-size: 14px;	} 
 	}
 
 @media (min-width: 700px) {
-	.h2{ font-size: 14px } /* Minimum font size */
+	h2{ font-size: 14px } /* Minimum font size */
 	p, td.form { font-size: 12px; }
 	}
 

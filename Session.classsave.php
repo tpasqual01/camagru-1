@@ -3,58 +3,47 @@ Class CSession
 {
 
     public static $verbose = False;
-    private $servername = "host=localhost";
-    private $username = "admin";
-    private $password = "admin";
-    private $dbname = "dbname=camagru";
 
 
     public function __construct()
     {
-        return;
-    }
-
-    public function user_login()
-    {
+        $servername = "localhost:";
+        $username = "admin";
+        $password = "admin";
+        $dbname = "camagru";
         $email = strip_tags($_POST['email']);
         $Password = strip_tags($_POST['Password']);
+
         try {
             $conn = new PDO('mysql:host=localhost;dbname=camagru', $username, $password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $requete = $conn->prepare("SELECT id, Nom, Prenom, email, Password FROM tbl_camagru LIMIT 1"); 
             $requete->execute();
+
             while($lignes=$requete->fetch(PDO::FETCH_OBJ))
+                {
+                //echo $lignes->Nom.'<br />'; && $lignes->password == $password
+                    //print ( $lignes->Nom.' '.$lignes->Password .' ' .$Password. '<br />');
                     if ($lignes->email == $email && $lignes->Password == $Password )
+                    {
                         $this->set_session($lignes->email, $lignes->Nom, $lignes->Prenom );
+                        //exit();
+                    }
+                }
+                //return;
+
             }
         catch(PDOException $e)
-            { echo "Error Database : " . $e->getMessage(); }
+            {
+            echo "Error Database : " . $e->getMessage();
+            }
         $conn = null;
         return;
     }
 
-    public function user_exist()
-    {
-        $email = strip_tags($_POST['email']);
-        try {
-            $conn = new PDO('mysql:host=localhost;dbname=camagru', $username, $password);
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $requete = $conn->prepare("SELECT email FROM tbl_camagru LIMIT 1"); 
-            $requete->execute();
-            while($lignes=$requete->fetch(PDO::FETCH_OBJ))
-                    if ($lignes->email == $email )
-                        $user_exist = 'yes';
-
-            }
-        catch(PDOException $e)
-            { echo "Error Database : " . $e->getMessage(); }
-        $conn = null;
-        return($user_exist);
-    }
-
     public function __destruct()
     {
-        print ('<p>destruct</p>');
+        if (self::$verbose == True)
         return;
     }
 
@@ -86,24 +75,6 @@ Class CSession
         //foreach ($_SESSION as $key => $value)
             //echo $value.'<br />';
         return('ok');
-   }
-
-       public function get_Profile()
-   {
-    //PRINT 'SESSION<BR />';
-    if ($_SESSION['valide'] == 'ok')
-    {
-        $tab = array();
-        $tab[] = "Email"; $tab[] = $_SESSION['email'];
-        $tab[] = "Nom"; $tab[] = $_SESSION['Nom'];
-        $tab[] = "Prenom"; $tab[] = $_SESSION['Prenom'];
-        $tab[] = "Session"; $tab[] = $_SESSION['valide'];
-
-        return($tab);
-    }
-    else
-        return('erreur');
-
    }
     public function kill_session()
    {

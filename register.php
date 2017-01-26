@@ -18,9 +18,9 @@ $TabForm[] = $inscription->InputLabel("Password", "Password", "Password");
 $TabForm[] = $inscription->InputPassword("Password", "Password");
 $TabForm[] = $inscription->Submit("Envoyer");
 
-include_once ('FormPrint.class.php');
-$a = new CFormPrint('test');
-$a->FormPrint('Inscriptions', $TabForm);
+//include_once ('Print.class.php');
+$a = new CPrint('test');
+$a->Form_Print('Inscriptions', $TabForm);
 
 //var_dump($TabForm);
 

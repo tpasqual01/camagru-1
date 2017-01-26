@@ -1,10 +1,16 @@
 <?php
-require_once('includes.php');
-require_once('Session.class.php');
+require_once('includes_session.php');
+//require_once('Session.class.php');
 //session_start();
-
 $session = new CSession($_POST);
-if ($_SESSION["valide"]=='ok') {header('Location: home.php');}
+$session->user_login();
+$session_usr_exist = new CSession($_POST);
+print ($session_usr_exist->user_exist());
+exit();
+//print ('sess '.$_SESSION['valide']);
+if ($_SESSION['valide'] == 'ok') 
+
+{header('Location: home.php');}
 else
 {header('Location: index.php');}
 //print 'session status get '.$_SESSION["status"].'<br />';
