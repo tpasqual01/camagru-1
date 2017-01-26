@@ -16,8 +16,8 @@ $TabForm[] = $login->InputPassword("Password", "Password");
 $TabForm[] = $login->Submit("Envoyer");
 
 
-$a = new CPrint();
-$a->form_Print('Login', $TabForm);
+$print = new CPrint();
+$print->Form('Login', $TabForm);
 
 print('<p> Not yet registered : <a href="register.php" target="_self">Sign Up</a></>');
 //var_dump($TabForm);

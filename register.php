@@ -7,7 +7,7 @@ require_once('header.php');
 $TabForm = array();
 
 $inscription = new CForm;
-$TabForm[] = $inscription->Form('FormGet.class.php', 'Form', 'POST');
+$TabForm[] = $inscription->Form('registercheck.php', 'Form', 'POST');
 $TabForm[] = $inscription->InputLabel("Nom", "Votre Nom", "Nom");
 $TabForm[] = $inscription->InputText("Votre Nom", "Nom");
 $TabForm[] = $inscription->InputLabel("Prenom", "Votre Prénom", "Prenom");
@@ -18,9 +18,9 @@ $TabForm[] = $inscription->InputLabel("Password", "Password", "Password");
 $TabForm[] = $inscription->InputPassword("Password", "Password");
 $TabForm[] = $inscription->Submit("Envoyer");
 
-//include_once ('Print.class.php');
-$a = new CPrint('test');
-$a->Form_Print('Inscriptions', $TabForm);
+print('<div id="main">');
+$print = new CPrint();
+$print->Form('Inscriptions', $TabForm);
 
 //var_dump($TabForm);
 

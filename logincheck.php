@@ -2,12 +2,12 @@
 require_once('includes_session.php');
 //require_once('Session.class.php');
 //session_start();
-$session = new CSession($_POST);
+$session = new CSession();
 $session->user_login();
 $session_usr_exist = new CSession($_POST);
-print ($session_usr_exist->user_exist());
-exit();
-//print ('sess '.$_SESSION['valide']);
+//print ($session_usr_exist->user_exist());
+//exit();
+
 if ($_SESSION['valide'] == 'ok') 
 
 {header('Location: home.php');}

@@ -1,6 +1,5 @@
 <?php
-require_once('includes.php');
-require_once('Session.class.php');
+require_once('includes_session.php');
 //session_start();
 Class CFormGet{
     public $newvar = 0;
@@ -33,13 +32,13 @@ Class CFormGet{
 
     static function doc()
     {
-       return (file_get_contents('Form.doc.txt'));
+       return (file_get_contents('CFormGet.doc.txt'));
     }
 
 }
 ?>
 <?php
-$session = new CSession($_POST);
+$session = new CSession();
 
 //print 'session status get '.$_SESSION["status"].'<br />';
 /*$formget = new CFormGet;

@@ -1,5 +1,5 @@
 <?php
 session_start();
-include_once ('Form.class.php');
-include_once ('Print.class.php');
+include_once ('CForm.class.php');
+include_once ('CPrint.class.php');
 ?>

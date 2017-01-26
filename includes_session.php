@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once('Session.class.php');
-include_once ('Form.class.php');
-include_once ('Print.class.php');
+require_once('CSession.class.php');
+include_once ('CForm.class.php');
+include_once ('CPrint.class.php');
 ?>

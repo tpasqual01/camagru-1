@@ -4,12 +4,7 @@ body {
 	padding : 0px;
 	color: #000000;
 	background-color:#FFFFFF;
-/*background-image:  url('images/fond.jpg'); 
-background-position: 0 0; 
-background-attachment:fixed;
-background-repeat:repeat; */
-font-family: 'Titillium Web', sans-serif;
-	/*font-family: 'Open Sans', sans-serif;*/
+	font-family: 'Titillium Web', sans-serif;
 }
 
 #header {
@@ -52,9 +47,10 @@ p.header_user {	color: #BBBBBB;}
 h1	{
 	text-align: left;
 	margin-top: 20px;
+	margin-left: 20px;
 	margin-bottom: 40px;
-	color: #345;
-	text-shadow: 1px 1px 1px #ccc;
+	color: #000;
+	text-shadow: 3px 3px 3px #ccc;
 	}
 
 h2	{
@@ -62,20 +58,13 @@ h2	{
 	margin: 0;
 	}
 
-@media (max-width: 1200px) {
-	h2{ font-size: 18px }  /* Maximum font size */
-	p, td.form { font-size: 14px;	} 
+
+@media (max-width: 700px) {
+	h2.Titre{ font-size: 14px }  /* Maximum font size */
+	p, td.form { font-size: 12px;	} 
 	}
 
-@media (min-width: 700px) {
-	h2{ font-size: 14px } /* Minimum font size */
-	p, td.form { font-size: 12px; }
+@media (min-width: 1200px) {
+	h2.Titre { font-size: 18px } /* Minimum font size */
+	p, td.form { font-size: 14px; }
 	}
-
-
-	
-	
-
-
-
-
