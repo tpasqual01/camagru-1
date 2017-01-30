@@ -43,7 +43,7 @@ Class CSession
             //$conn = new PDO('mysql:host=localhost;dbname=camagru', $username, $password);
             $conn = new PDO('mysql:host='.$this->servername.';dbname='.$this->dbname, $this->username, $this->password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $requete = $conn->prepare("INSERT INTO ". $this->tbl."(Nom, Prenom, email, Password, Info) VALUES(".$requete->quote($_POST['Nom']).', '.$requete->quote($_POST['Prenom']).', '. $requete->quote($_POST['email']).', '.$requete->quote($_POST['Password']).", 'free')"); 
+            $requete = $conn->prepare("INSERT INTO ". $this->tbl."(Nom, Prenom, email, Password, Info) VALUES(".$requete->quote($_POST['Nom']).', '.$requete->quote($_POST['Prenom']).', '. $requete->quote($email).', '.$requete->quote($Password).", 'info')"); 
             $requete->execute();
             $var = 'ok';
             }

@@ -1,0 +1,80 @@
+<html>
+
+<head>
+<script>
+/*
+
+function N1() {
+    this.N1name = 'N1nom';
+    this.N1dept = 'N1dept';
+}
+
+function N2() {
+    //this.N2base = N1;
+    this.N2base="general";
+    //this.N2projets=projs || [];
+}
+test = new N1();
+console.log(test.N1name);
+
+N2.prototype = new N1;
+
+/*function N3(nom, projs, moteur) {
+    this.N3base = N2;
+    this.N3base(nom, "ingenierie", projs);
+   //this.dept = "ingenierie";
+    this.moteur=moteur || "";
+}
+N3.prototype = new N2;
+//var jeanne = new N3("Jeanne Dubois", ["navigateur", "javascript"], "carnot");
+
+jeanne = new N2;
+console.log("N1name: "+N1.N1name)+"\n";
+console.log("N1name: "+jeanne.N1name)+"\n";
+console.log("Dept: "+jeanne.dept)+"\n";
+console.log("Projet: "+jeanne.projets)+"\n";
+console.log("Moteur: "+jeanne.moteur)+"\n";
+*/
+function Employee(nom, dept) {
+    this.name = nom;
+    this.dept = dept || "general";
+    moiemployee = this;
+}
+
+function Worker(nom, dept, projs) {
+    this.base = Employee; // on fait un lien
+    this.base(nom, dept); // on met a jour les proprietes
+    this.projets = projs || [];
+    console.log('Worker.projets '+this.projets);
+    moiworker = this;
+
+}
+Worker.prototype = new Employee;
+
+
+function Ingenieur(nom, projs, moteur) {
+	this.base = Worker;
+	this.base(nom, "ingenierie", projs);
+	this.dept = "ingenierie";
+    this.moteur = moteur || "";
+    moiingenieur = this;
+    console.log(moiingenieur);
+   // console.log('Ingenieur.moteur '+this.moteur);
+   // console.log('Ingenieur.base '+this.base);
+}
+Ingenieur.prototype = new Worker;
+var jeanne = new Ingenieur("Jeanne Dubois", ["308", "405"], "diesel");
+var jean = new Ingenieur("Jean Dupont", ["208", "106"], "essence");
+    console.log('jean.name '+jean.name);
+
+//console.log('worker '+this.base.nom);
+
+console.log("Name: "+jeanne.name)+"\n";
+console.log("Dept: "+jeanne.dept)+"\n";
+console.log("Projet: "+jeanne.projets)+"\n";
+console.log("Moteur: "+jeanne.moteur)+"\n";
+</script>
+</head>
+<body>
+</body>
+</html>
