@@ -15,14 +15,18 @@ print('<div id="main">');
 <style> 
 div.cr1 {border: 0px solid #000000;margin : 0;text-align:left;width:512px;height:auto;overflow: hidden;}
 img.a1 { position: absolute;-moz-opacity:0;filter:alpha(opacity=0);z-index: -12;width:512px;height:auto}
-img.a2 { position: absolute;-moz-opacity:0;filter:alpha(opacity=100);z-index: -12;width:512px;height:auto}
+img.a2, canvas#canvas { position: absolute;-moz-opacity:0;filter:alpha(opacity=100);z-index: -12;width:512px;height:auto}
+#video {border: 1px solid #000000;margin : 0;text-align:left;width:512px;height:auto;overflow: hidden;}
+#canvas {border: 1px solid #000000;margin : 0;text-align:left;width:512px;height:auto;overflow: hidden;}
 </style>
 <video id="video"></video>
-<button id="startbutton">Prendre une photo</button>
-<canvas id="canvas"></canvas>
-<img src="cam.jpg" id="photo" alt="photo">
+<button id="startbutton" onclick="takepicture();">Prendre une photo</button>
+<button id="draw" onclick="draw();">Draw</button>
+
 <?php
-print('<div class="cr1"><img class="a2" src="cam.jpg"></div>');
+//print('<div class="cr1"><img class="a2" src="cam.jpg"></div>');
+//print('<canvas id="canvas" class="a2"></canvas>');
+print('<div class="cr1"><canvas id="canvas"></canvas></div>');
 print('<div class="cr1"><img class="a1" src="fonds/fond01.png"></div>');
 
 print('</div>');	
