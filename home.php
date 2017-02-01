@@ -13,22 +13,23 @@ print('<div id="main">');
 
 
 <style> 
-div.cr1 {border: 0px solid #000000;margin : 0;text-align:left;width:512px;height:auto;overflow: hidden;}
-img.a1 { position: absolute;-moz-opacity:0;filter:alpha(opacity=0);z-index: -12;width:512px;height:auto}
-img.a2, canvas#canvas { position: absolute;-moz-opacity:0;filter:alpha(opacity=100);z-index: -12;width:512px;height:auto}
-#video {border: 1px solid #000000;margin : 0;text-align:left;width:512px;height:auto;overflow: hidden;}
-#canvas {border: 1px solid #000000;margin : 0;text-align:left;width:512px;height:auto;overflow: hidden;}
+
+#video { border: 1px solid #000000;margin : 0;}
+#canvas { border: 1px solid #000000;margin : 0;}
+.btn { padding: 5px; margin: 10px;}
+.fonds { margin: 10px;}
+.fond { background-color: #ddd;}
 </style>
-<video id="video"></video>
-<button id="startbutton" onclick="takepicture();">Prendre une photo</button>
-<button id="draw" onclick="draw();">Draw</button>
+<video style="display:inline" width="514px" height="386" id="video"></video>
 
 <?php
 //print('<div class="cr1"><img class="a2" src="cam.jpg"></div>');
 //print('<canvas id="canvas" class="a2"></canvas>');
-print('<div class="cr1"><canvas id="canvas"></canvas></div>');
-print('<div class="cr1"><img class="a1" src="fonds/fond01.png"></div>');
-
+print('<canvas style="display:none" width="514px" height="386"  id="canvas"></canvas>');
+//print('<div class="cr1"><img class="a1" src="fonds/fond01.png"></div>');
+print('<div class="btn"><button id="draw" onclick="draw();">Prendre une photo</button></div>');
+print('<div class="fonds"><img width="51px" id="fond" class="fond" src="fonds/fond01.png"> ');
+print('<img width="51px" id="fond" class="fond" src="fonds/fond02.png"></div>');
 print('</div>');	
 include ('footer.php');
 ?>

@@ -18,9 +18,10 @@ body {
 
 #main {
 	display: inline-block;
-	width: 600px;
-	height: 400px;
+	width: 550px;
+	height: auto;
 	vertical-align: top;
+	text-align: center;
 	margin: 1em;
 	padding: 10px;
 	border: 1px solid #cccccc ;
