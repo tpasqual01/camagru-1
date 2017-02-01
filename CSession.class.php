@@ -148,6 +148,11 @@ Class CSession
         $_SESSION = array(); session_destroy(); 
         return('ok');
    }
+
+   public function send_validation()
+   {
+    
+   }
    
 }
 

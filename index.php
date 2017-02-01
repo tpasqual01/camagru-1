@@ -11,7 +11,7 @@ if ($_SESSION["valide"]=='ok') {header('Location: home.php');}
 require_once('head.php');
 require_once('header.php');
 
-$session = new CSession($_POST);
+$session = new CSession();//$_POST remove
 $session->user_login();
 /*$session_usr_exist = new CSession($_POST);
 print ($session_usr_exist->user_exist());

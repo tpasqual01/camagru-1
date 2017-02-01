@@ -53,5 +53,10 @@ Class CPrint{
       print('</div>');
       return;
     }
+           public  function Content($Info)
+    {
+      print ('<p>'.$Info.'</p>');
+      return;
+    }
 }
 ?>
