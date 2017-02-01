@@ -1,0 +1,5 @@
+Class CSession
+	function user_login()
+	function user_add()
+	function user_exist()			vérifie si l'user est dans la table
+	function user_list()			réservé
