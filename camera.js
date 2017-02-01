@@ -16,26 +16,38 @@ navigator.mediaDevices.getUserMedia(constraints)
 })
 .catch(function(err) { console.log(err.name + ": " + err.message); })
 
+class Cfusion
+{
+  constructor(fond)
+  {
+    this.fond_select = fond; // this est important pour une variable de la classe et non de fonction
+    alert(' fond initial '+this.fond_select);
+  }
 
-function draw() {
-  //var canvas = document.getElementById('canvas');
-  //var canvas = document.querySelector('#canvas');
+  draw()
+  {
+    alert(' fond actif : '+this.fond_select);
+ 
+    var canvas = document.querySelector('#canvas');
+    var ctx = canvas.getContext('2d');
+    var canvaswidth = canvas.width;
+    var canvasheight = canvas.height;
+    // Draw photo
+    ctx.drawImage(video, 1, 1, canvaswidth, canvasheight);
+    // Draw background
+    ctx.drawImage(document.getElementById(this.fond_select), 0, 0, canvaswidth, canvasheight);
+    // effacer video et afficher fusion
+    video.style.display = "none";
+    canvas.style.display = "inline";
+  }
 
-  var canvas = document.querySelector('#canvas');
-
-  var ctx = canvas.getContext('2d');
-  canvaswidth = this.canvas.width;
-  canvasheight = this.canvas.height;
-  videowidth = this.video.width;
-  videoheight = this.video.height;
-  //var video = document.getElementById('video');
-//  alert('sizev '+videowidth+' '+videoheight+'sizec '+canvaswidth+' '+canvasheight);
-  // Draw photo
-  ctx.drawImage(video, 1, 1, canvaswidth, canvasheight);
-  // Draw background
-  ctx.drawImage(document.getElementById('fond'), 1, 1, canvaswidth, canvasheight);
-
-  video.style.display = "none";
-  canvas.style.display = "inline";
+  changefond(nom)
+  {
+  this.fond_select = nom;
+  alert(' changement du fond : '+this.fond_select);
+  }
 
 }
+
+const traitement = new Cfusion('fond02');
+
