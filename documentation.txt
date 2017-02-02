@@ -12,6 +12,8 @@ Class CSession
 
 Class CInscription
 	send_validation($info_user)			envoi un email de validation
+	function set_key_validation()			crée la clé de validation d'inscription
+	function get_key_validation()			recupère la clé de validation d'inscription
 	function send_email($email, $sujet, $message, $from)
 	
 	
