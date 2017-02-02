@@ -32,7 +32,19 @@ Class CInscription
         return;
     }
 
-    public function send_email()
+    public function set_key_validation()
+    {
+        //print ('<p>destruct</p>');
+        return;
+    }
+
+    public function get_key_validation()
+    {
+        //print ('<p>destruct</p>');
+        return;
+    }
+
+    public function send_email($email, $sujet, $message, $from)
     {
         print '
         Bonjour dominique LIEVRE

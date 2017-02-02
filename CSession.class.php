@@ -24,33 +24,21 @@ Class CSession
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $requete = $conn->prepare("SELECT id, Nom, Prenom, email, Password FROM ".$this->tbl." LIMIT 1"); 
             $requete->execute();
-            while($lignes=$requete->fetch(PDO::FETCH_OBJ))
-                    if ($lignes->email == $email && $lignes->Password == $Password )
-                        $this->set_session($lignes->email, $lignes->Nom, $lignes->Prenom );
+            while($lignes = $requete->fetch(PDO::FETCH_OBJ)){
+                    if ($lignes->email == $email && $lignes->Password == $Password ){
+                        if ($lignes->confirm == '1')
+                            $this->set_session($lignes->email, $lignes->Nom, $lignes->Prenom, $lignes->confirm );
+                        else
+                            {
+                                // renvoi du mail de validation
+                            }
+                    }
+                }
             }
         catch(PDOException $e)
             { echo "Error Database : " . $e->getMessage(); }
         $conn = null;
         return;
-    }
-
-        public function user_add()
-    {
-        $email = strip_tags($_POST['email']);
-        $Password = strip_tags($_POST['Password']);
-        // contre les injection sql : https://openclassrooms.com/courses/pdo-comprendre-et-corriger-les-erreurs-les-plus-frequentes
-        try {
-            //$conn = new PDO('mysql:host=localhost;dbname=camagru', $username, $password);
-            $conn = new PDO('mysql:host='.$this->servername.';dbname='.$this->dbname, $this->username, $this->password);
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $requete = $conn->prepare("INSERT INTO ". $this->tbl."(Nom, Prenom, email, Password, Info) VALUES(".$requete->quote($_POST['Nom']).', '.$requete->quote($_POST['Prenom']).', '. $requete->quote($email).', '.$requete->quote($Password).", 'info')"); 
-            $requete->execute();
-            $var = 'ok';
-            }
-        catch(PDOException $e)
-            { echo "Error Database : " . $e->getMessage(); $var = 'bad';}
-        $conn = null;
-        return($var);
     }
 
     public function user_exist()
@@ -71,7 +59,29 @@ Class CSession
         $conn = null;
         return($exist);
     }
-    public function user_list()
+        public function user_add()
+    {
+        $email = strip_tags($_POST['email']);
+        $Password = strip_tags($_POST['Password']);
+        $Confirm = 0;
+        $Keyconfirm = 'dsdfsdfsdf';
+////////// a faire pour valider l inscription
+        // contre les injection sql : https://openclassrooms.com/courses/pdo-comprendre-et-corriger-les-erreurs-les-plus-frequentes
+        try {
+            //$conn = new PDO('mysql:host=localhost;dbname=camagru', $username, $password);
+            $conn = new PDO('mysql:host='.$this->servername.';dbname='.$this->dbname, $this->username, $this->password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $requete = $conn->prepare("INSERT INTO ". $this->tbl."(Nom, Prenom, email, Password, Info) VALUES(".$requete->quote($_POST['Nom']).', '.$requete->quote($_POST['Prenom']).', '. $requete->quote($email).', '.$requete->quote($Password).", 'info')"); 
+            $requete->execute();
+            $var = 'ok';
+            }
+        catch(PDOException $e)
+            { echo "Error Database : " . $e->getMessage(); $var = 'bad';}
+        $conn = null;
+        return($var);
+    }
+
+    public function user_list() // reservé superuser
     {
         try {
             $conn = new PDO('mysql:host='.$this->servername.';dbname='.$this->dbname, $this->username, $this->password);
@@ -79,18 +89,44 @@ Class CSession
             $requete = $conn->prepare("SELECT Nom, Prenom, email FROM ".$this->tbl); 
             $requete->execute();
             while($lignes=$requete->fetch(PDO::FETCH_OBJ))
-            {
-                print '<p>'.$lignes->email.'<br />';
-                print $lignes->Nom.'<br />';
-                print $lignes->Prenom.'<br />';
-                print '</p>';
-            }
+                {
+                    print '<p>'.$lignes->email.'<br />';
+                    print $lignes->Nom.'<br />';
+                    print $lignes->Prenom.'<br />';
+                    print '</p>';
+                }
 
             }
         catch(PDOException $e)
             { echo "Error Database : " . $e->getMessage(); $exist = 'Erreur';}
         $conn = null;
         return($exist);
+    }
+
+    public function set_session($email, $nom, $prenom, $confirm)
+   {
+        $_SESSION['email'] = $email;
+        $_SESSION['Nom'] = $nom;
+        $_SESSION['Prenom'] = $prenom;
+        $_SESSION['Confirm'] = $confirm;
+        $_SESSION['valide'] = 'ok';
+
+        return('ok');
+   }
+
+    public function get_Profile()
+    {
+        if ($_SESSION['valide'] == 'ok') {
+            $tab = array();
+            $tab[] = "Email"; $tab[] = $_SESSION['email'];
+            $tab[] = "Nom"; $tab[] = $_SESSION['Nom'];
+            $tab[] = "Prénom"; $tab[] = $_SESSION['Prenom'];
+            $tab[] = "Confirmé"; $tab[] = $_SESSION['Confirm'];
+            $tab[] = "Session"; $tab[] = $_SESSION['valide'];
+            return($tab);
+        }
+        else
+            return('erreur');
     }
 
     public function __destruct()
@@ -113,46 +149,19 @@ Class CSession
     {
         $info = '';
         //INSERT INTO `tbl_camagru` (`id`, `Nom`, `Prenom`, `email`, `password`, `info`) VALUES (NULL, 'LIEVRE', 'Dominique', 'dominique@lievre.net', 'test', 'sans');
-       return (file_get_contents('Form.doc.txt'));
+       return (file_get_contents('documentation.txt'));
     }
 
-    public function set_session($email, $Nom, $Prenom)
-   {
-        $_SESSION['email'] = $email;
-        $_SESSION['Nom'] = $Nom;
-        $_SESSION['Prenom'] = $Prenom;
-        $_SESSION['valide'] = 'ok';
 
-        return('ok');
-   }
 
-       public function get_Profile()
-   {
-    //PRINT 'SESSION<BR />';
-    if ($_SESSION['valide'] == 'ok')
-    {
-        $tab = array();
-        $tab[] = "Email"; $tab[] = $_SESSION['email'];
-        $tab[] = "Nom"; $tab[] = $_SESSION['Nom'];
-        $tab[] = "Prenom"; $tab[] = $_SESSION['Prenom'];
-        $tab[] = "Session"; $tab[] = $_SESSION['valide'];
-
-        return($tab);
-    }
-    else
-        return('erreur');
-
-   }
+    
     public function kill_session()
    {
         $_SESSION = array(); session_destroy(); 
         return('ok');
    }
 
-   public function send_validation()
-   {
-    
-   }
+
    
 }
 
