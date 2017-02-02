@@ -1,12 +1,7 @@
 <?php
-// le retour de $user_exist ne fonctionne pas
-// voir pourquoi
-// remplacer print<p> par $print->content('hghghg')
-// $action = $session->user_add();  enlever provisoirement a remettre a la fin
+// on recupere le mail pour envoyer un lien de reinitialisation de password
 require_once('includes_session.php');
-//$session = new CSession();
-//$session->user_login();
-$CSession = new CSession();
+//$CSession = new CSession();
 $user_exist = $CSession->user_exist();
 $CInscription = new CInscription();
 $CPrint = new CPrint();
@@ -23,27 +18,17 @@ if ($user_exist != 'yes' and $user_exist != 'no')
 
 if ($user_exist == 'yes')
 	{
-		$CPrint->content('Erreur : Utilisateur existe dans la base'); 
+		$CPrint->content('Vous allez recevoir un mail contenant un lien de réinitialisation'); 
 		$suite = 'register.php';
 	}
 
 if ($user_exist == 'no')
 	{
-		$CPrint->content('Utilisateur à créer dans la base'); 
-		$action = $CSession->user_add();
-	//$action = 'ok'; /////// a remettre apres validation
-		if ($action == 'user_add' ) 
-		{
-			$CPrint->content('Utilisateur validé dans la base');
-		//if ($CInscription->send_validation($_SESSION) == 'ok'){$print->content('send ok');}
-			$CPrint->content('<br />Un mail de validation de compte vient de vous être envoyé à '.strip_tags($_POST['email']).'<br /> pour finaliser votre inscription');
-			$suite = 'index.php';
-		}
-		else
-		{
-			$CPrint->content("Impossible de créer l'utilisateur");
-			$suite = 'register.php';	
-		}
+		$CPrint->content('le mail : '.$_POST['email'].' n\'existe pas dans la base'); 
+		$suite = 'index.php';
+		
+			//$CPrint->content('<br />Un mail de validation de compte vient de vous être envoyé à '.strip_tags($_POST['email']).'<br /> pour finaliser votre inscription');
+
 	
  }
 

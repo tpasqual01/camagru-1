@@ -12,7 +12,6 @@ Class CSession
 
     public function __construct()
     {
-        $
         return;
     }
 
