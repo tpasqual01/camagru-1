@@ -21,21 +21,33 @@ Class CInscription
 //reset_password
 //remove_user
 
-    public function send_validation($info_user)
+    public function send_validation($email, $Prenom, $Nom, $Keyconfirm)
     {
-        foreach ($info_user as $key => $value) {
-            print '<p>'.$value.'</p>';
-        }
-       // $email = strip_tags($_POST['email']);
-        //$Password = strip_tags($_POST['Password']);
 
-        return;
+        $sujet = 'Confirmation d\'inscription Camagru';
+        $message = 'Bonjour '.$Prenom.' '. $Nom.'<br />';
+        $message .= "Félicitations vous venez de vous inscrire sur Camagru.<br />
+        Pour valider cette inscription, il ne vous reste plus qu'à cliquer sur le lien suivant :";
+        $message .= "<a href='http://$servername:8080/camagru/inscriptioncheck.php?key=$Keyconfirm'> Validez votre incription</a>";
+        $from = 'dlievre<dlievre@student.42.fr>';
+
+        //$CInscription = new CInscription();
+        $action = $this->send_email($email, $sujet, $message, $from);
+        if ($action == 'send_email') 
+            return('send_validation');
+        else
+        {
+            print ($action);
+            exit;
+        }
+//        return;
     }
 
-    public function set_key_validation()
+    public function set_key_validation($email)
     {
-        //print ('<p>destruct</p>');
-        return;
+        $generatedKey = sha1(mt_rand(10000,99999).time().$email);
+        // $idunik = uniqid();
+        return($generatedKey);
     }
 
     public function get_key_validation()
@@ -46,14 +58,18 @@ Class CInscription
 
     public function send_email($email, $sujet, $message, $from)
     {
-        print '
-        Bonjour dominique LIEVRE
 
-Félicitations vous venez de vous inscrire sur Freelancerepublik.
+        $to  = $email;
+        $headers = "MIME-Version: 1.0\r\n"; 
+        $headers .= "Content-type: text/html; charset=iso-8859-1\r\n"; 
+        $headers .= "From: ".$from ."\r\nX-Mailer:PHP"; 
 
-Pour valider cette inscription, il ne vous reste plus qu\'à cliquer sur le lien suivant :
+        if (mail($to,$sujet,$message,$headers)) 
+            return "send_email";
+        else 
+            return " Erreur de transmission email";
 
-http://www.freelancerepublik.com/users/valid/0b70b440-9f4a-11e5-8d37-a3ba02c0c87c';
+  return;
     }
 
     public function __destruct()
@@ -76,29 +92,8 @@ http://www.freelancerepublik.com/users/valid/0b70b440-9f4a-11e5-8d37-a3ba02c0c87
     {
         $info = '';
         //INSERT INTO `tbl_camagru` (`id`, `Nom`, `Prenom`, `email`, `password`, `info`) VALUES (NULL, 'LIEVRE', 'Dominique', 'dominique@lievre.net', 'test', 'sans');
-       return (file_get_contents('Form.doc.txt'));
+       return (file_get_contents('documentation.txt'));
     }
-
-
-
-       public function get_Profile()
-   {
-    //PRINT 'SESSION<BR />';
-    if ($_SESSION['valide'] == 'ok')
-    {
-        $tab = array();
-        $tab[] = "Email"; $tab[] = $_SESSION['email'];
-        $tab[] = "Nom"; $tab[] = $_SESSION['Nom'];
-        $tab[] = "Prenom"; $tab[] = $_SESSION['Prenom'];
-        $tab[] = "Session"; $tab[] = $_SESSION['valide'];
-
-        return($tab);
-    }
-    else
-        return('erreur');
-
-   }
-
    
 }
 

@@ -4,21 +4,16 @@ if ($_SESSION['valide'] != 'ok') {header('Location: login.php');}
 require_once('head.php');
 require_once('header.php');
 
-if ($_GET['raz']=='1') {$_SESSION = array(); session_destroy(); print '<p>Session destroye</p>';exit;}
 print('<div id="main">');
 ?>
 <style> 
 #video { border: 1px solid #000000;margin : 0;}
 #canvas { border: 1px solid #000000;margin : 0;}
 .btn { padding: 5px; margin: 10px;}
-.fonds { margin: 10px;}
-.fond { background-color: #fff;}
 </style>
-<video style="display:inline" width="514px" height="386" id="video"></video>
 <?php
-
+print('<video style="display:inline" width="514px" height="386" id="video"></video>');
 print('<canvas style="display:none" width="514px" height="386"  id="canvas"></canvas>');
-
 print('<div class="btn"><button id="draw2" onclick="traitement.draw(\'fond01\');">Prendre une photo</button></div>');
 
 // afficher les fonds

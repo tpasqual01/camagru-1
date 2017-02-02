@@ -9,8 +9,10 @@ Class CSession
     private $dbname = "camagru";
     private $tbl = "tbl_camagru";
 
+
     public function __construct()
     {
+        $
         return;
     }
 
@@ -22,15 +24,17 @@ Class CSession
             //$conn = new PDO('mysql:host=localhost;dbname=camagru', $username, $password);
             $conn = new PDO('mysql:host='.$this->servername.';dbname='.$this->dbname, $this->username, $this->password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $requete = $conn->prepare("SELECT id, Nom, Prenom, email, Password FROM ".$this->tbl." LIMIT 1"); 
+            $requete = $conn->prepare("SELECT Id, Nom, Prenom, email, Password, Confirm, Keyconfirm FROM ".$this->tbl." LIMIT 1"); 
             $requete->execute();
             while($lignes = $requete->fetch(PDO::FETCH_OBJ)){
                     if ($lignes->email == $email && $lignes->Password == $Password ){
-                        if ($lignes->confirm == '1')
+                        if ($lignes->confirm == 1) //
                             $this->set_session($lignes->email, $lignes->Nom, $lignes->Prenom, $lignes->confirm );
                         else
                             {
                                 // renvoi du mail de validation
+                                $CInscription = new CInscription();
+                                $CInscription->send_validation($email, $lignes->Nom, $lignes->Keyconfirm);
                             }
                     }
                 }
@@ -43,42 +47,62 @@ Class CSession
 
     public function user_exist()
     {
-        $email = strip_tags($_POST['email']);
-        $exist = '';
+        $email = strip_tags($_POST['email']); // $requete->quote(
+       // $exist = '';
         try {
             $conn = new PDO('mysql:host='.$this->servername.';dbname='.$this->dbname, $this->username, $this->password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $requete = $conn->prepare("SELECT email FROM ".$this->tbl." LIMIT 5"); 
+            $requete = $conn->prepare("SELECT email FROM $this->tbl WHERE email = :email"); 
+            $requete->bindValue(':email', $email, PDO::PARAM_STR);
             $requete->execute();
-            $exist = '';
+            $exist = 'no';
             while($lignes=$requete->fetch(PDO::FETCH_OBJ))
                     if ($lignes->email == $email ) { $exist = 'yes'; }
             }
         catch(PDOException $e)
-            { echo "Error Database : " . $e->getMessage(); $exist = 'Erreur';}
+            { echo "Error Database : " . $e->getMessage(); $exist = 'Erreur'; return($exist);}
         $conn = null;
         return($exist);
     }
+
+        private function quotesep($val)
+        {
+               return("'".$val."', ");
+        }
+
+        private function quote($val)
+        {
+            return("'".$val."'");
+        }
+
         public function user_add()
     {
         $email = strip_tags($_POST['email']);
         $Password = strip_tags($_POST['Password']);
         $Confirm = 0;
-        $Keyconfirm = 'dsdfsdfsdf';
-////////// a faire pour valider l inscription
+        $CInscription = new CInscription();
+        $Keyconfirm = $CInscription->set_key_validation;
+        $Keyconfirm = "sdfgsdhf";
+        $tentative_reinit = 5;
+
         // contre les injection sql : https://openclassrooms.com/courses/pdo-comprendre-et-corriger-les-erreurs-les-plus-frequentes
+
         try {
             //$conn = new PDO('mysql:host=localhost;dbname=camagru', $username, $password);
             $conn = new PDO('mysql:host='.$this->servername.';dbname='.$this->dbname, $this->username, $this->password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $requete = $conn->prepare("INSERT INTO ". $this->tbl."(Nom, Prenom, email, Password, Info) VALUES(".$requete->quote($_POST['Nom']).', '.$requete->quote($_POST['Prenom']).', '. $requete->quote($email).', '.$requete->quote($Password).", 'info')"); 
+$req = "INSERT INTO ". $this->tbl." (Nom, Prenom, email, Password, Confirm, Keyconfirm, Info) VALUES (".$this->quotesep($_POST['Nom']).$this->quotesep($_POST['Prenom']).$this->quotesep($email).$this->quotesep($_POST['Password']).$Confirm.', '.$this->quotesep($Keyconfirm).$cpt_reinit.", "."'info')";
+            $requete = $conn->prepare($req);
             $requete->execute();
-            $var = 'ok';
+
+            // envoi validation par mail uniquement si base maj
+            //print ($email.' '.$lignes->Prenom.' '.$lignes->Nom.' '.$lignes->Keyconfirm);
+            $CInscription->send_validation($email, $lignes->Prenom, $lignes->Nom, $lignes->Keyconfirm);
             }
         catch(PDOException $e)
-            { echo "Error Database : " . $e->getMessage(); $var = 'bad';}
+            { echo "Error Database : " . $e->getMessage(); print 'Erreur user_add'; exit;}
         $conn = null;
-        return($var);
+        return('user_add');
     }
 
     public function user_list() // reservé superuser
@@ -108,20 +132,20 @@ Class CSession
         $_SESSION['email'] = $email;
         $_SESSION['Nom'] = $nom;
         $_SESSION['Prenom'] = $prenom;
-        $_SESSION['Confirm'] = $confirm;
+        $_SESSION['Confirme'] = $confirm;
         $_SESSION['valide'] = 'ok';
 
         return('ok');
    }
 
-    public function get_Profile()
+    public function get_profile()
     {
         if ($_SESSION['valide'] == 'ok') {
             $tab = array();
             $tab[] = "Email"; $tab[] = $_SESSION['email'];
             $tab[] = "Nom"; $tab[] = $_SESSION['Nom'];
             $tab[] = "Prénom"; $tab[] = $_SESSION['Prenom'];
-            $tab[] = "Confirmé"; $tab[] = $_SESSION['Confirm'];
+            $tab[] = "Confirmé"; $tab[] = $_SESSION['Confirme'];
             $tab[] = "Session"; $tab[] = $_SESSION['valide'];
             return($tab);
         }

@@ -9,11 +9,11 @@ if ($_SESSION['valide'] == 'ok')
   require_once('header.php');
   print('<div id="main">');
 
-  $profile = new CSession();
-  $TabProfil = $profile->get_Profile();
+  $CSession = new CSession();
+  $TabProfil = $CSession->get_profile();
 
   $print = new CPrint();
-  $print->Profil('Profile Utilisateur', $TabProfil);
+  $print->profil('Profile Utilisateur', $TabProfil);
 
   print('</div>'); 
   include ('footer.php');

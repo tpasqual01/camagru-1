@@ -21,12 +21,12 @@ class Cfusion
   constructor(fond)
   {
     this.fond_select = fond; // this est important pour une variable de la classe et non de fonction
-    alert(' fond initial '+this.fond_select);
+    //alert(' fond initial '+this.fond_select);
   }
 
   draw()
   {
-    alert(' fond actif : '+this.fond_select);
+    //alert(' fond actif : '+this.fond_select);
  
     var canvas = document.querySelector('#canvas');
     var ctx = canvas.getContext('2d');

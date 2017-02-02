@@ -26,7 +26,7 @@ Class CPrint{
 
     static function doc()
     {
-       return (file_get_contents('Form.doc.txt'));
+       return (file_get_contents('documentation.txt'));
     }
 
    public  function Form($Titre, $Tab)
@@ -42,7 +42,7 @@ Class CPrint{
       print('</div>');
         return;
     }
-       public  function Profil($Titre, $Tab)
+       public  function profil($Titre, $Tab)
     {
       print ('<div id="profile">');
       print ('<h2 class="Titre">'.$Titre.'</h2>');
@@ -53,7 +53,7 @@ Class CPrint{
       print('</div>');
       return;
     }
-           public  function Content($Info)
+           public  function content($Info)
     {
       print ('<p>'.$Info.'</p>');
       return;

@@ -16,10 +16,10 @@ $TabForm[] = $login->InputPassword("Password", "Password");
 $TabForm[] = $login->Submit("Envoyer");
 
 
-$print = new CPrint();
-$print->Form('Login', $TabForm);
-
-print('<p> Not yet registered : <a href="register.php" target="_self">Sign Up</a></>');
+$CPrint = new CPrint();
+$CPrint->Form('Login', $TabForm);
+$CPrint->content( 'Mot de passe oublié  : <a href="pwd_reinit.php" target="_self">Réinitialisation</a>');
+$CPrint->content( 'Inscription : <a href="register.php" target="_self">S\'enregister</a>');
 //var_dump($TabForm);
 
 print('</div>');
