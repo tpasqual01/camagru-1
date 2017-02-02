@@ -8,10 +8,11 @@ Class CSession
 	function get_Profile()				recupère les info de sessions
 	function kill_session()				stop la session et les variables de session
 	static function doc()				return le contenu du fichier documentation
-
-
+	function password_reinit ($email)		réinitialise le password avec la question secréte
+	
 Class CInscription
 	send_validation($info_user)			envoi un email de validation
+	
 	function set_key_validation($email)		crée la clé de validation d'inscription
 	function get_key_validation()			recupère la clé de validation d'inscription
 	function send_email($email, $sujet, $message, $from)
