@@ -1,7 +1,7 @@
 <?php
 // on recupere le mail pour envoyer un lien de reinitialisation de password
 require_once('includes_session.php');
-//$CSession = new CSession();
+$CSession = new CSession();
 $user_exist = $CSession->user_exist();
 $CInscription = new CInscription();
 $CPrint = new CPrint();
@@ -26,9 +26,6 @@ if ($user_exist == 'no')
 	{
 		$CPrint->content('le mail : '.$_POST['email'].' n\'existe pas dans la base'); 
 		$suite = 'index.php';
-		
-			//$CPrint->content('<br />Un mail de validation de compte vient de vous être envoyé à '.strip_tags($_POST['email']).'<br /> pour finaliser votre inscription');
-
 	
  }
 

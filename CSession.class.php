@@ -47,8 +47,8 @@ Class CSession
 
     public function user_exist()
     {
-        $email = strip_tags($_POST['email']); // $requete->quote(
-       // $exist = '';
+        $email = strip_tags($_POST['email']);
+       ///   securisation : https://openclassrooms.com/courses/securite-php-securiser-les-flux-de-donnees
         try {
             $conn = new PDO('mysql:host='.$this->servername.';dbname='.$this->dbname, $this->username, $this->password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -153,6 +153,11 @@ $req = "INSERT INTO ". $this->tbl." (Nom, Prenom, email, Password, Confirm, Keyc
             return('erreur');
     }
 
+    function secure($var)
+    {
+        return (mysql_real_escape_string($var);
+    }
+    
     public function __destruct()
     {
         //print ('<p>destruct</p>');

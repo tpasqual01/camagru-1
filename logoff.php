@@ -9,17 +9,18 @@ else
 		require_once('head.php');
 		require_once('header.php');
 		print('<div id="main">');
-		$session_off = new CSession();
-		if ( $session_off->kill_session() == 'ok') 
+		$CSession = new CSession();
+		$CPrint = new CPrint();
+		if ( $CSession->kill_session() == 'ok') 
 			{ 
-				print '<h2>Votre session est terminée<h2>';
+				$CPrint->titre('Votre session est terminée');
 			}
 			else
 			{
-				print '<h2>Votre session n\'existe pas<h2>';
+				$CPrint->titre('Votre session n\'existe pas');
 
 			}
-		print '<p><a href="index.php"> Retour à l\'accueil</a></p>';
+		$CPrint->content('<a href="index.php"> Retour à l\'accueil</a>');
 		print('</div>');	
 		print '
     	<script  type="text/javascript">
