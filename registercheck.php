@@ -1,6 +1,4 @@
 <?php
-// le retour de $user_exist ne fonctionne pas
-// voir pourquoi
 // remplacer print<p> par $print->content('hghghg')
 // $action = $session->user_add();  enlever provisoirement a remettre a la fin
 require_once('includes_session.php');
@@ -14,6 +12,10 @@ $CPrint = new CPrint();
 require_once('head.php');
 require_once('header.php');
 print('<div id="main">');
+
+///////////////   a faire 
+// tester si l'ensemble des champs sont renseignes
+// si ce n'est pas le cas , reafficher le form en mettant les valeurs saisie et un message qui indique l'erreur
 
 if ($user_exist != 'yes' and $user_exist != 'no') 
 	{ 

@@ -11,16 +11,30 @@ if ($_SESSION["valide"]=='ok') {header('Location: home.php');}
 require_once('head.php');
 require_once('header.php');
 
-$session = new CSession();//$_POST remove
-$session->user_login();
-/*$session_usr_exist = new CSession($_POST);
-print ($session_usr_exist->user_exist());
-exit();*/
+$session = new CSession();
+if ($session->user_login() == 'user_login')
+	{
+	if ($_SESSION['valide'] == 'ok') 
+		header('Location: home.php');
+	}
+if ($session->user_login() == 'user not confirm')
+	{
+		$CPrint = new CPrint();
+    	$CPrint->content("....Votre inscription n'est pas validée<br />Un mail de validation vient de vous être envoyé pour confirmer votre inscription");
+    	$CInscription = new CInscription();
+    	$CInscription->send_validation($email, $lignes->Prenom, $lignes->Nom, $lignes->Keyconfirm);
+	}
+
+exit;
 print ('sess '.$_SESSION['valide']);
 if ($_SESSION['valide'] == 'ok') 
-{header('Location: home.php');}
+	{
+		header('Location: home.php');
+	}
 else
-{header('Location: index.php');}
+	{
+		header('Location: index.php');
+	}
 
 print('<div id="main">');
 

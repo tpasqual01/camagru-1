@@ -1,25 +1,42 @@
 <?php
 require_once('includes_session.php');
-//require_once('Session.class.php');
-//session_start();
-$session = new CSession();
-$session->user_login();
-$session_usr_exist = new CSession($_POST);
-//print ($session_usr_exist->user_exist());
-//exit();
 
-if ($_SESSION['valide'] == 'ok') 
+$CSession = new CSession();
 
-{header('Location: home.php');}
-else
-{header('Location: index.php');}
-//print 'session status get '.$_SESSION["status"].'<br />';
-/*$formget = new CFormGet;
-foreach ($_POST as $key => $value)
-print ($value.'<br />');*/
-//$_SESSION["user"]=$_POST['email'];
-//$_SESSION["valide"]='ok';
-//print ('session : '.$_SESSION["user"].'<br />');
-//if ($_SESSION["valide"]=='oui') {header('Location: index.php');}
-//header('index.php');
+$user_ckeck = $CSession->user_login();
+
+if (!$user_ckeck) header('Location: login.php');
+
+if ($user_ckeck == 'user_login')
+	{
+	if ($_SESSION['valide'] == 'ok') 
+		header('Location: home.php');
+	exit;
+	}
+require_once('head.php');
+require_once('header.php');
+print('<div id="main">');
+
+
+if ($user_ckeck == 'user not confirmed')
+	{
+		$CPrint = new CPrint();
+    	$CPrint->content("Votre inscription n'est pas encore validée<br />Vous avez dû recevoir un mail pour finaliser votre inscription");
+    	//$CInscription = new CInscription();
+    	//$CInscription->send_validation($email, $lignes->Prenom, $lignes->Nom, $lignes->Keyconfirm);
+	}
+if ($user_ckeck == 'user password bad')
+	{
+		$CPrint = new CPrint();
+    	$CPrint->content("Votre Mot de passe n'est pas valide<br />Vérifiez votre saisie");
+	}
+if ($user_ckeck == 'user not exit')
+	{
+		$CPrint = new CPrint();
+    	$CPrint->content("Votre Login n'existe pas dans la base<br />Vérifiez votre saisie");
+	}
+
+
+print('</div>');	
+include ('footer.php');
 ?>

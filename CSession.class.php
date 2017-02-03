@@ -19,6 +19,7 @@ Class CSession
     {
         $email = strip_tags($_POST['email']);
         $Password = strip_tags($_POST['Password']);
+        $retour = 'user not exit';
         try {
             //$conn = new PDO('mysql:host=localhost;dbname=camagru', $username, $password);
             $conn = new PDO('mysql:host='.$this->servername.';dbname='.$this->dbname, $this->username, $this->password);
@@ -26,22 +27,22 @@ Class CSession
             $requete = $conn->prepare("SELECT Id, Nom, Prenom, email, Password, Confirm, Keyconfirm FROM ".$this->tbl." LIMIT 1"); 
             $requete->execute();
             while($lignes = $requete->fetch(PDO::FETCH_OBJ)){
-                    if ($lignes->email == $email && $lignes->Password == $Password ){
-                        if ($lignes->confirm == 1) //
-                            $this->set_session($lignes->email, $lignes->Nom, $lignes->Prenom, $lignes->confirm );
-                        else
-                            {
-                                // renvoi du mail de validation
-                                $CInscription = new CInscription();
-                                $CInscription->send_validation($email, $lignes->Nom, $lignes->Keyconfirm);
-                            }
+                    if ($lignes->email == $email && $lignes->Password == $Password && $lignes->confirm == 1)
+                    {
+                        $this->set_session($lignes->email, $lignes->Nom, $lignes->Prenom, $lignes->confirm );
+                        $retour = 'user_login';
                     }
+                    if ($lignes->email == $email && $lignes->Password == $Password && $lignes->confirm == 0)
+                        $retour = 'user not confirmed';
+
+                    if ($lignes->email == $email && $lignes->Password != $Password)
+                        $retour = 'user password bad';
                 }
             }
         catch(PDOException $e)
             { echo "Error Database : " . $e->getMessage(); }
         $conn = null;
-        return;
+        return($retour);
     }
 
     public function user_exist()
@@ -82,7 +83,7 @@ Class CSession
         $CInscription = new CInscription();
         $Keyconfirm = $CInscription->set_key_validation;
         $Keyconfirm = "sdfgsdhf";
-        $tentative_reinit = 5;
+        $cpt_reinit = 5;
 
         // contre les injection sql : https://openclassrooms.com/courses/pdo-comprendre-et-corriger-les-erreurs-les-plus-frequentes
 
@@ -90,7 +91,7 @@ Class CSession
             //$conn = new PDO('mysql:host=localhost;dbname=camagru', $username, $password);
             $conn = new PDO('mysql:host='.$this->servername.';dbname='.$this->dbname, $this->username, $this->password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$req = "INSERT INTO ". $this->tbl." (Nom, Prenom, email, Password, Confirm, Keyconfirm, Info) VALUES (".$this->quotesep($_POST['Nom']).$this->quotesep($_POST['Prenom']).$this->quotesep($email).$this->quotesep($_POST['Password']).$Confirm.', '.$this->quotesep($Keyconfirm).$cpt_reinit.", "."'info')";
+$req = "INSERT INTO ". $this->tbl." (Nom, Prenom, email, Password, Confirm, Keyconfirm, cpt_reinit, Info) VALUES (".$this->quotesep($_POST['Nom']).$this->quotesep($_POST['Prenom']).$this->quotesep($email).$this->quotesep($_POST['Password']).$Confirm.', '.$this->quotesep($Keyconfirm).$cpt_reinit.", "."'info')";
             $requete = $conn->prepare($req);
             $requete->execute();
 

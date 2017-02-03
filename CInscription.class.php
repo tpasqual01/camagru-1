@@ -8,7 +8,7 @@ Class CInscription
     private $password = "admin";
     private $dbname = "camagru";
     private $tbl = "tbl_camagru";
-
+    
     public function __construct()
     {
         return;
@@ -29,18 +29,12 @@ Class CInscription
         $message .= "Félicitations vous venez de vous inscrire sur Camagru.<br />
         Pour valider cette inscription, il ne vous reste plus qu'à cliquer sur le lien suivant :";
         $message .= "<a href='http://$servername:8080/camagru/inscriptioncheck.php?key=$Keyconfirm'> Validez votre incription</a>";
-        $from = 'dlievre<dlievre@student.42.fr>';
+        $from = 'dlievre@student.42.fr';
 
         //$CInscription = new CInscription();
         $action = $this->send_email($email, $sujet, $message, $from);
         if ($action == 'send_email') 
             return('send_validation');
-        else
-        {
-            print ($action);
-            exit;
-        }
-//        return;
     }
 
     public function set_key_validation($email)
@@ -58,16 +52,22 @@ Class CInscription
 
     public function send_email($email, $sujet, $message, $from)
     {
+        $CPrint = new CPrint();
+        $codageiso = 'charset=iso-8859-1';
+        $codageutf = 'charset=utf-8';
 
         $to  = $email;
         $headers = "MIME-Version: 1.0\r\n"; 
-        $headers .= "Content-type: text/html; charset=iso-8859-1\r\n"; 
-        $headers .= "From: ".$from ."\r\nX-Mailer:PHP"; 
+        $headers .= "Content-type: text/html; ".$codageutf."\r\n"; 
+        $headers .= "From: ".$from."\r\nX-Mailer:PHP"; 
 
-        if (mail($to,$sujet,$message,$headers)) 
+        if (mail($to, $sujet, $message, $headers))
             return "send_email";
         else 
-            return " Erreur de transmission email";
+        {
+            $CPrint->content(" Erreur de transmission email, contactez le support");
+            exit;
+        }
 
   return;
     }

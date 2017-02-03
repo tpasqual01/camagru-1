@@ -8,8 +8,8 @@ $TabForm = array();
 
 $CForm = new CForm;
 $TabForm[] = $CForm->Form('pwd_reinit_send.php', 'Form', 'POST');
-$TabForm[] = $CForm->InputLabel("Mail", "Votre Mail", "Mail");
-$TabForm[] = $CForm->InputMail("Votre Mail", "email");
+$TabForm[] = $CForm->InputLabel("Mail ", "Votre Mail", "Mail");
+$TabForm[] = $CForm->InputMail("Votre Mail ", "email");
 
 $TabForm[] = $CForm->Submit("Envoyer");
 

@@ -52,13 +52,16 @@ Class CForm{
 
     public  function InputText($Titre, $id)
     {
+        //$value = $_POST[$id];
         return('<INPUT type="text" name="'. $id.'" id="'. $id.'" value="'.$value.'">');
         // !$id || !$labelFor
     }
 
-    public  function InputMail($Titre, $id)
+    public  function InputMail($Titre, $id, $post)
     {
-        return('<INPUT type="mail" name="'. $id.'" id="'. $id.'" value="'.$value.'" placeholder=" yourname@domain.com" alt="Email servira au login" required>');
+        //$value = $post;
+                print('...'.$post. ' ...'. $id.'...');
+        return('<INPUT type="mail" name="'. $id.'" id="'. $id.'" value="'.$post.'" placeholder=" yourname@domain.com" alt="Email servira au login" required>');
         // !$id || !$labelFor
     }
 
@@ -68,9 +71,9 @@ Class CForm{
         // !$id || !$labelFor
     }
 
-	public  function Submit($Titre)
+	public  function Submit($Titre, $id)
     {   
-        return('<INPUT type="submit" value="'. $Titre.'">');
+        return('<INPUT type="submit"  name="'. $id.'" id="'. $id.'" value="'. $Titre.'">');
         // !$id || !$labelFor
     }
 
