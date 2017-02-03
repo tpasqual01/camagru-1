@@ -50,19 +50,31 @@ Class CForm{
         return('<LABEL for="'.$labelFor.'">'. $labelTitre."</LABEL>");
     }
 
-    public  function InputText($Titre, $id)
+    public  function InputText($Titre, $id, $post)
     {
         //$value = $_POST[$id];
-        return('<INPUT type="text" name="'. $id.'" id="'. $id.'" value="'.$value.'">');
+        return('<INPUT type="text" name="'. $id.'" id="'. $id.'" value="'.$post.'">');
         // !$id || !$labelFor
     }
 
     public  function InputMail($Titre, $id, $post)
     {
         //$value = $post;
-                print('...'.$post. ' ...'. $id.'...');
+//                print('...'.$post. ' ...'. $id.'...');
         return('<INPUT type="mail" name="'. $id.'" id="'. $id.'" value="'.$post.'" placeholder=" yourname@domain.com" alt="Email servira au login" required>');
         // !$id || !$labelFor
+    }
+
+    public  function InputSelect($Titre, $id, $tbl, $selected)
+    {
+        $retour ='<select name='.$id.' id='.$id.'>';
+        foreach ($tbl as $key => $value)
+        {
+            if ($key == $selected) {$option_select = ' selected';} else {$option_select = '';}
+            $retour .= '<option value="'.$key.'"'.$option_select.'>'.$value.'</option>';
+        }
+        $retour .= '</select>';
+        return($retour);
     }
 
 	public  function InputPassword($Titre, $id)

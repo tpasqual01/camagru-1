@@ -27,12 +27,12 @@ Class CSession
             $requete = $conn->prepare("SELECT Id, Nom, Prenom, email, Password, Confirm, Keyconfirm FROM ".$this->tbl." LIMIT 1"); 
             $requete->execute();
             while($lignes = $requete->fetch(PDO::FETCH_OBJ)){
-                    if ($lignes->email == $email && $lignes->Password == $Password && $lignes->confirm == 1)
+                    if ($lignes->email == $email && $lignes->Password == $Password && $lignes->Confirm == 1)
                     {
-                        $this->set_session($lignes->email, $lignes->Nom, $lignes->Prenom, $lignes->confirm );
+                        $this->set_session($lignes->email, $lignes->Nom, $lignes->Prenom, $lignes->Confirm );
                         $retour = 'user_login';
                     }
-                    if ($lignes->email == $email && $lignes->Password == $Password && $lignes->confirm == 0)
+                    if ($lignes->email == $email && $lignes->Password == $Password && $lignes->Confirm == 0)
                         $retour = 'user not confirmed';
 
                     if ($lignes->email == $email && $lignes->Password != $Password)
