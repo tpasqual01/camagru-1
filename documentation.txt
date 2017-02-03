@@ -1,22 +1,36 @@
-Class CSession
-	function user_login()				vérifie si le user est valide	
-	function user_add()				ajoute le nouvel user dans la table
-	function send_validation()			envoi un email de validation
-	function user_exist()				vérifie si l'user est dans la table
-	function set_session($email, $Nom, $Prenom, $valid)	set les variables de session
-	function user_list()				liste les users  (réservé superuser)
-	function get_Profile()				recupère les info de sessions
-	function kill_session()				stop la session et les variables de session
-	static function doc()				return le contenu du fichier documentation
-	function password_reinit ($email)		réinitialise le password avec la question secréte
+Class CForm
+	FormTitre($titre)
+	Form($uri, $class, $method )
+	InputLabel($labelFor, $labelTitre, $id)
+	InputText($Titre, $id, $post)
+	InputMail($Titre, $id, $post)
+	InputSelect($Titre, $id, $tbl, $selected)
+	InputPassword($Titre, $id)
+	Submit($Titre, $id)
 	
 Class CInscription
-	send_validation($info_user)			envoi un email de validation
+	send_validation($email, $Prenom, $Nom, $Keyconfirm)	envoi un email de validation
+	set_key_validation($email)		crée la clé de validation d'inscription
+	get_key_validation()			recupère la clé de validation d'inscription
+	send_email($email, $sujet, $message, $from)
 	
-	function set_key_validation($email)		crée la clé de validation d'inscription
-	function get_key_validation()			recupère la clé de validation d'inscription
-	function send_email($email, $sujet, $message, $from)
+Class CPrint
+	Form($Titre, $Tab)
+	profil($Titre, $Tab)
+	titre(($Info)
+	content($Info)
 	
+Class CSession
+	user_login()				vérifie si le user est valide	
+	user_add()				ajoute le nouvel user dans la table
+	send_validation()			envoi un email de validation
+	user_exist()				vérifie si l'user est dans la table
+	set_session($email, $Nom, $Prenom, $valid)	set les variables de session
+	user_list()				liste les users  (réservé superuser)
+	get_Profile()				recupère les info de sessions
+	kill_session()				stop la session et les variables de session
+	static function doc()				return le contenu du fichier documentation
+	password_reinit ($email)		réinitialise le password avec la question secréte
 	
 //send_validation
 //cle_validation
