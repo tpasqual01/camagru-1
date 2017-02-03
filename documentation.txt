@@ -31,6 +31,7 @@ Class CSession
 	kill_session()				stop la session et les variables de session
 	static function doc()				return le contenu du fichier documentation
 	password_reinit ($email)		réinitialise le password avec la question secréte
+	function secure($var) ....
 	
 //send_validation
 //cle_validation
