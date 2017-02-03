@@ -17,8 +17,8 @@ Class CInscription
 Class CPrint
 	Form($Titre, $Tab)
 	profil($Titre, $Tab)
-	titre(($Info)
-	content($Info)
+	titre(($Info)				affiche avec H2
+	content($Info)				affiche avec p
 	
 Class CSession
 	user_login()				vérifie si le user est valide	
