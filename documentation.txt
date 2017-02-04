@@ -18,7 +18,8 @@ Class CPrint
 	Form($Titre, $Tab)
 	profil($Titre, $Tab)
 	titre(($Info)				affiche avec H2
-	content($Info)				affiche avec p
+	content($Info, $class)			affiche avec p et class
+	content_array($Tab, $class)		affiche un tableau a 2 dimensions
 	
 Class CSession
 	user_login()				vérifie si le user est valide	
