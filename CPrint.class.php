@@ -53,11 +53,21 @@ Class CPrint{
       print('</div>');
       return;
     }
-     public  function content($Info)
+     public  function content($Info, $class)
     {
-      print ('<p>'.$Info.'</p>');
+      print ('<p class="'.$class.'">'.$Info.'</p>');
       return;
     }
+    public function content_array($Tab, $class)
+    {
+      print ('<p><table>');
+      foreach ($Tab as $key => $value)
+        print ('<tr><td class="'.$class.'">'.$key.'</td><td class="'.$class.'">'.$value.'</td></tr>');
+      print ('</table></p>');
+              //print ('<tr><td '.'class='.'>'.$key.'</td><td>'.$value.'</td></tr>');
+      return;
+    }
+
     public  function titre($Info)
     {
       print ('<h2>'.$Info.'</h2>');

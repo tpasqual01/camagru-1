@@ -21,7 +21,7 @@ body {
 	width: 550px;
 	height: auto;
 	vertical-align: top;
-	text-align: center;
+	text-align: left;
 	margin: 1em;
 	padding: 10px;
 	border: 1px solid #666666 ;
@@ -48,10 +48,14 @@ body {
 
 .header_titre {	float: left; margin : 5px;}
 .header_user {	float: right; margin : 5px;}
-p.header_user {color: #BBBBBB;}
+p.header_user {color: #BBBBBB; text-align: right;}
 p.header_user a:link, p  a:link {color: #BBBBBB;}
 p.header_user a:visited, p  a:visited  {color: #BBBBBB;}
 p.header_user a:hover, p  a:hover  {color: #FFFFFF;}
+
+p.content  {color: #BBBBBB;}
+p.lien  {color: #FFFFFF;}
+p.msg_err  {color: #ff6600;}
 
 h1	{
 	text-align: left;

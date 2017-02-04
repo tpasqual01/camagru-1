@@ -4,8 +4,8 @@ Class CSession
 
     public static $verbose = False;
     private $servername = "localhost";
-    private $username = "admin";
-    private $password = "admin";
+    private $username = "root";
+    private $password = "";
     private $dbname = "camagru";
     private $tbl = "tbl_camagru";
 
@@ -124,7 +124,7 @@ $req = "INSERT INTO ". $this->tbl." (Nom, Prenom, email, Password, Confirm, Keyc
         catch(PDOException $e)
             { echo "Error Database : " . $e->getMessage(); $exist = 'Erreur';}
         $conn = null;
-        return($exist);
+        return;
     }
 
     public function set_session($email, $nom, $prenom, $confirm)
@@ -142,11 +142,8 @@ $req = "INSERT INTO ". $this->tbl." (Nom, Prenom, email, Password, Confirm, Keyc
     {
         if ($_SESSION['valide'] == 'ok') {
             $tab = array();
-            $tab[] = "Email"; $tab[] = $_SESSION['email'];
-            $tab[] = "Nom"; $tab[] = $_SESSION['Nom'];
-            $tab[] = "Prénom"; $tab[] = $_SESSION['Prenom'];
-            $tab[] = "Confirmé"; $tab[] = $_SESSION['Confirme'];
-            $tab[] = "Session"; $tab[] = $_SESSION['valide'];
+            foreach ($_SESSION as $nom => $value)
+                $tab[$nom] = $value;
             return($tab);
         }
         else
@@ -155,7 +152,7 @@ $req = "INSERT INTO ". $this->tbl." (Nom, Prenom, email, Password, Confirm, Keyc
 
     function secure($var)
     {
-        return (mysql_real_escape_string($var);
+        return (mysql_real_escape_string($var));
     }
     
     public function __destruct()

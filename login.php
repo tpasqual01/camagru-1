@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once('includes_session.php');
 $aff_formulaire = 'yes';
 if (isset($_POST['Envoyer']) == TRUE)
@@ -13,20 +14,23 @@ if ($user_ckeck == 'user_login')
         header('Location: home.php');
     exit;
     }
-
+$class_msg = '';
 if ($user_ckeck == 'user not confirmed')
     {
         $content = "Votre inscription n'est pas encore validée<br />Vous avez dû recevoir un mail pour finaliser votre inscription";
+        $class_msg = 'msg_err';
         $aff_formulaire = 'no';
     }
 if ($user_ckeck == 'user password bad')
     {
         $content = "Votre Mot de passe n'est pas valide<br />Vérifiez votre saisie";
+        $class_msg = 'msg_err';
         $aff_formulaire = 'yes';
     }
 if ($user_ckeck == 'user not exit')
     {
         $content = "Votre Login n'existe pas dans la base<br />Vérifiez votre saisie";
+        $class_msg = 'msg_err';
         $aff_formulaire = 'yes';
     }
 }
@@ -46,10 +50,10 @@ $TabForm[] = $login->InputPassword("Password", "Password");
 $TabForm[] = $login->Submit("Envoyer", "Envoyer");
 
 $CPrint = new CPrint();
-if ($content) $CPrint->content($content);
+if ($content) $CPrint->content($content, $class_msg);
 $CPrint->Form('Login', $TabForm);
-$CPrint->content( 'Mot de passe oublié  : <a href="pwd_reinit.php" target="_self">Réinitialisation</a>');
-$CPrint->content( 'Inscription : <a href="register.php" target="_self">S\'enregister</a>');
+$CPrint->content( 'Mot de passe oublié  : <a href="pwd_reinit.php" target="_self">Réinitialisation</a>', 'lien');
+$CPrint->content( 'Inscription : <a href="register.php" target="_self">S\'enregister</a>', 'lien');
 
 }
 print('</div>');

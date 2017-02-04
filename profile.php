@@ -12,8 +12,11 @@ if ($_SESSION['valide'] == 'ok')
   $CSession = new CSession();
   $TabProfil = $CSession->get_profile();
 
-  $print = new CPrint();
-  $print->profil('Profile Utilisateur', $TabProfil);
+  $CPrint = new CPrint();
+  //$print->profil('Profile Utilisateur', $TabProfil);
+
+  $CPrint->titre('Profile Utilisateur');
+  $CPrint->content_array($TabProfil, 'form');
 
   print('</div>'); 
   include ('footer.php');
