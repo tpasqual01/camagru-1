@@ -58,22 +58,22 @@ if ( $aff_formulaire == 'yes' )
 
 	$inscription = new CForm;
 	$TabForm[] = $inscription->Form('register.php', 'Form', 'POST');
-	$TabForm[] = $inscription->InputLabel("Nom", "Votre Nom", "Notused");
+	$TabForm[] = $inscription->InputLabel("Votre Nom", "LabelNom", "Notused");// InputLabel(new = ($labelTitre, $id, $labelFor)
 	$TabForm[] = $inscription->InputText("Votre Nom", "Nom", $_POST['Nom']);
-	$TabForm[] = $inscription->InputLabel("Prenom", "Votre Prénom", "Notused");
+	$TabForm[] = $inscription->InputLabel("Votre Prénom", "LabelPrenom", "Notused");
 	$TabForm[] = $inscription->InputText("Votre Prénom", "Prenom", $_POST['Prenom']);
-	$TabForm[] = $inscription->InputLabel("Mail", "Votre Mail", "Notused");
+	$TabForm[] = $inscription->InputLabel("Votre Mail", "LabelMail", "Notused");
 	$TabForm[] = $inscription->InputMail("Votre Mail", "email", $_POST['email']);
-	$TabForm[] = $inscription->InputLabel("Password", "Password", "Notused");
+	$TabForm[] = $inscription->InputLabel("Password", "LabelPassword", "Notused");
 	$TabForm[] = $inscription->InputPassword("Password", "Password");
 
 	$Tabquestion[] = "Le nom de votre chien";
 	$Tabquestion[] = "Le prènom de votre meilleur ami";
 	$Tabquestion[] = "Votre nom de jeune fille";
 	$Tabquestion[] = "Votre sport favori";
-	$TabForm[] = $inscription->InputLabel("Question secrète", "Question secrète", "Notused");
+	$TabForm[] = $inscription->InputLabel("Question secrète", "LabelQuestion", "Notused");
 	$TabForm[] = $inscription->InputSelect("Question secrète ", "Question", $Tabquestion, '3');
-	$TabForm[] = $inscription->InputLabel("Réponse", "Réponse", "Notused");
+	$TabForm[] = $inscription->InputLabel("Réponse", "LabelReponse", "Notused");
 	$TabForm[] = $inscription->InputText("Reponse", "Reponse", $_POST['Reponse']);
 
 	$TabForm[] = $inscription->Submit("Envoyer", "Envoyer");

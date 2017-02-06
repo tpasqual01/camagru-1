@@ -78,7 +78,7 @@ if ( $aff_formulaire == 'yes' )
 
 	$CForm = new CForm;
 	$TabForm[] = $CForm->Form('pwd_reinit.php', 'Form', 'POST');
-	$TabForm[] = $CForm->InputLabel("Mail ", "Votre Mail", "Mail");
+	$TabForm[] = $CForm->InputLabel("Votre Mail ", "LabelMail", "LabelMail");
 	$TabForm[] = $CForm->InputMail("Votre Mail ", "email", $_POST['email']);
 	$TabForm[] = $CForm->Submit("Réinitialisation", "Reinit");
 

@@ -92,12 +92,12 @@ Class CSession
         return($exist);
     }
 
-    private function quotesep($val)
+    private function quotesep($val)// securise le passage des variables dans la requete sql, avec separateur
     {
         return("'".$val."', ");
     }
 
-    private function quote($val)
+    private function quote($val)// securise le passage des variables dans la requete sql, sans separateur
     {
         return("'".$val."'");
     }
@@ -182,7 +182,7 @@ $req = "INSERT INTO ". $this->tbl." (Nom, Prenom, email, Password, Confirm, Keyu
         return (mysql_real_escape_string($var));
     }
 
-    function ismajuscule($var)
+    function ismajuscule($var)// permet de verifier si il y a une majuscule dans la chaine pour les mauvais password
     {
         $nb = strlen($var);
         $retour = 'minuscule';

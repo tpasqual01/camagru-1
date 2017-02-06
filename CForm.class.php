@@ -45,7 +45,7 @@ Class CForm{
         // !$uri || !$method
     }
 
-    public  function InputLabel($labelFor, $labelTitre, $id)
+    public  function InputLabel($labelTitre, $id, $labelFor)
     {
         return('<LABEL for="'.$labelFor.'">'. $labelTitre."</LABEL>");
     }
