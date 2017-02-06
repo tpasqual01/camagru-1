@@ -10,8 +10,10 @@ Class CForm
 	
 Class CInscription
 	send_validation($email, $Prenom, $Nom, $Keyconfirm)	envoi un email de validation
+	send_reinitialisation($email)	renvoi un mail de réinitialisation	
 	set_key_validation($email)		crée la clé de validation d'inscription
-	get_key_validation()			recupère la clé de validation d'inscription
+	get_key_validation($email)			recupère la clé de validation d'inscription
+	set_key_reinit($email)			réinitialise la clé pour le mot de passe
 	send_email($email, $sujet, $message, $from)
 	
 Class CPrint
@@ -30,8 +32,8 @@ Class CSession
 	user_list()				liste les users  (réservé superuser)
 	get_Profile()				recupère les info de sessions
 	kill_session()				stop la session et les variables de session
-	static function doc()				return le contenu du fichier documentation
-	password_reinit ($email)		réinitialise le password avec la question secréte
+	static function doc()			return le contenu du fichier documentation
+	maj_key	($email)			mise a jour de la key du user (confirm ou reinit)
 	function secure($var)			requête SQL, permet de sécuriser en ajoutant '' a la variable
 	function ismajuscule ($var)		teste si il y a une majuscule, utile pour le mot de passe
 	
@@ -41,3 +43,5 @@ Class CSession
 //validation_user
 //reset_password
 //remove_user
+
+	password_reinit ($email)		réinitialise le password avec la question secréte
