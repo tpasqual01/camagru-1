@@ -25,20 +25,30 @@ else
 
 
 if ( $aff_formulaire == 'yes' or 1 == 1)
-{
-$TabForm = array();
-$login = new CForm;
-$TabForm[] = $login->Form('pwd_reinit_chk.php', 'Form', 'POST');
-$TabForm[] = $login->InputLabel("Mail", "Votre Mail", "Mail");
-$TabForm[] = $login->InputMail("Votre Mail", "email", $_POST['email']);
-$TabForm[] = $login->InputLabel("Votre nouveau Password", "LabelPassword", "LabelPassword"); // InputLabel($labelTitre, $id, $labelFor)
-$TabForm[] = $login->InputPassword("Password", "Password", ''); // InputPassword($Titre, $id)
-$TabForm[] = $login->InputLabel("Confirmez le Password", "LabelPasswordbis", "LabelPasswordbis");
-$TabForm[] = $login->InputPassword("Passwordbis", "Passwordbis", '');
-$TabForm[] = $login->Submit("Envoyer", "Envoyer");
+	{
+		$CForm = new CForm;
 
-$CPrint->Form('Login', $TabForm);
-//$CPrint->content( 'Mot de passe oublié  : <a href="pwd_reinit.php" target="_self">Réinitialisation</a>', 'lien');
+		$TabForm = array();
+		$login = new CForm;
+		$TabForm[] = $CForm->Form('pwd_reinit_chk.php', 'Form', 'POST');
+		$TabForm[] = $CForm->InputLabel("Mail", "Votre Mail", "Mail");
+		$TabForm[] = $CForm->InputMail("Votre Mail", "email", $_POST['email']);
+// aller recuperer la question secrete de ce user et l'afficher
+		$Tabquestion[] = "Le nom de votre chien";
+
+		$TabForm[] = $CForm->InputLabel("Question secrète", "LabelQuestion", "Notused");
+		$TabForm[] = $CForm->InputSelect("Question secrète ", "Question", $Tabquestion, '0');
+		$TabForm[] = $CForm->InputLabel("Réponse", "LabelReponse", "Notused");
+		$TabForm[] = $CForm->InputText("Reponse", "Reponse", $_POST['Reponse']);
+
+		$TabForm[] = $CForm->InputLabel("Votre nouveau Password", "LabelPassword", "LabelPassword"); // InputLabel($labelTitre, $id, $labelFor)
+		$TabForm[] = $CForm->InputPassword("Password", "Password", ''); // InputPassword($Titre, $id)
+		$TabForm[] = $CForm->InputLabel("Confirmez le Password", "LabelPasswordbis", "LabelPasswordbis");
+		$TabForm[] = $CForm->InputPassword("Passwordbis", "Passwordbis", '');
+		$TabForm[] = $CForm->Submit("Envoyer", "Envoyer");
+
+		$CPrint->Form('Réinitialisation du Mot de passe', $TabForm);
+		//$CPrint->content( 'Mot de passe oublié  : <a href="pwd_reinit.php" target="_self">Réinitialisation</a>', 'lien');
 }
 
 

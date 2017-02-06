@@ -50,7 +50,7 @@ Class CForm{
         return('<LABEL for="'.$labelFor.'">'. $labelTitre."</LABEL>");
     }
 
-    public  function InputText($Titre, $id, $post)
+    public  function InputText($Titre, $id, $post)// , $required a ajouter
     {
         //$value = $_POST[$id];
         return('<INPUT type="text" name="'. $id.'" id="'. $id.'" value="'.$post.'">');
