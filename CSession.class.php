@@ -24,7 +24,7 @@ Class CSession
             //$conn = new PDO('mysql:host=localhost;dbname=camagru', $username, $password);
             $conn = new PDO('mysql:host='.$this->servername.';dbname='.$this->dbname, $this->username, $this->password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $requete = $conn->prepare("SELECT Id, Nom, Prenom, email, Password, Confirm, Keyconfirm FROM ".$this->tbl." LIMIT 1"); 
+            $requete = $conn->prepare("SELECT Id, Nom, Prenom, email, Password, Confirm, Keyuser FROM ".$this->tbl." WHERE email = '".$email."'"); //$this->secure('email')
             $requete->execute();
             while($lignes = $requete->fetch(PDO::FETCH_OBJ)){
                     if ($lignes->email == $email && $lignes->Password == $Password && $lignes->Confirm == 1)
@@ -41,6 +41,33 @@ Class CSession
             }
         catch(PDOException $e)
             { echo "Error Database : " . $e->getMessage(); }
+        $conn = null;
+        return($retour);
+    }
+
+    public function maj_key($email)
+    {
+        $generatedKey = uniqid();
+        try {
+            $conn = new PDO('mysql:host='.$this->servername.';dbname='.$this->dbname, $this->username, $this->password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $requete = $conn->prepare("UPDATE $this->tbl SET Keyuser = :generatedKey WHERE email = :email"); 
+            $requete->bindValue(':email', $email, PDO::PARAM_STR);
+            $requete->bindValue(':generatedKey', $generatedKey, PDO::PARAM_STR);
+            $requete->execute();
+            if ($requete)
+                $retour = $generatedKey;
+            else
+                {
+                    $retour = 'maj key err';
+                    $CPrint = new CPrint();
+                    $CPrint->content('Erreur maj key', 'msg_err');
+                    exit;
+                }
+            }
+
+        catch(PDOException $e)
+            { echo "Error Database : " . $e->getMessage(); $exist = 'Erreur'; return($exist);}
         $conn = null;
         return($retour);
     }
@@ -65,15 +92,15 @@ Class CSession
         return($exist);
     }
 
-        private function quotesep($val)
-        {
-               return("'".$val."', ");
-        }
+    private function quotesep($val)
+    {
+        return("'".$val."', ");
+    }
 
-        private function quote($val)
-        {
-            return("'".$val."'");
-        }
+    private function quote($val)
+    {
+        return("'".$val."'");
+    }
 
         public function user_add()
     {
@@ -81,8 +108,8 @@ Class CSession
         $Password = strip_tags($_POST['Password']);
         $Confirm = 0;
         $CInscription = new CInscription();
-        $Keyconfirm = $CInscription->set_key_validation;
-        $Keyconfirm = "sdfgsdhf";
+        $Keyuser = $CInscription->set_key_validation;
+        $Keyuser = "sdfgsdhf";
         $cpt_reinit = 5;
 
         // contre les injection sql : https://openclassrooms.com/courses/pdo-comprendre-et-corriger-les-erreurs-les-plus-frequentes
@@ -91,13 +118,13 @@ Class CSession
             //$conn = new PDO('mysql:host=localhost;dbname=camagru', $username, $password);
             $conn = new PDO('mysql:host='.$this->servername.';dbname='.$this->dbname, $this->username, $this->password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$req = "INSERT INTO ". $this->tbl." (Nom, Prenom, email, Password, Confirm, Keyconfirm, cpt_reinit, Info) VALUES (".$this->quotesep($_POST['Nom']).$this->quotesep($_POST['Prenom']).$this->quotesep($email).$this->quotesep($_POST['Password']).$Confirm.', '.$this->quotesep($Keyconfirm).$cpt_reinit.", "."'info')";
+$req = "INSERT INTO ". $this->tbl." (Nom, Prenom, email, Password, Confirm, Keyuser, cpt_reinit, Info) VALUES (".$this->quotesep($_POST['Nom']).$this->quotesep($_POST['Prenom']).$this->quotesep($email).$this->quotesep($_POST['Password']).$Confirm.', '.$this->quotesep($Keyuser).$cpt_reinit.", "."'info')";
             $requete = $conn->prepare($req);
             $requete->execute();
 
             // envoi validation par mail uniquement si base maj
-            //print ($email.' '.$lignes->Prenom.' '.$lignes->Nom.' '.$lignes->Keyconfirm);
-            $CInscription->send_validation($email, $lignes->Prenom, $lignes->Nom, $lignes->Keyconfirm);
+            //print ($email.' '.$lignes->Prenom.' '.$lignes->Nom.' '.$lignes->Keyuser);
+            $CInscription->send_validation($email, $lignes->Prenom, $lignes->Nom, $lignes->Keyuser);
             }
         catch(PDOException $e)
             { echo "Error Database : " . $e->getMessage(); print 'Erreur user_add'; exit;}
@@ -134,7 +161,7 @@ $req = "INSERT INTO ". $this->tbl." (Nom, Prenom, email, Password, Confirm, Keyc
         $_SESSION['Prenom'] = $prenom;
         $_SESSION['Confirme'] = $confirm;
         $_SESSION['valide'] = 'ok';
-
+        if ($_SESSION["email"] == 'dominique@lievre.net' or $_SESSION["email"] == 'tpasqual@student.42.fr') $_SESSION['Superuser'] = 'yes';
         return('ok');
    }
 
@@ -153,6 +180,17 @@ $req = "INSERT INTO ". $this->tbl." (Nom, Prenom, email, Password, Confirm, Keyc
     function secure($var)
     {
         return (mysql_real_escape_string($var));
+    }
+
+    function ismajuscule($var)
+    {
+        $nb = strlen($var);
+        $retour = 'minuscule';
+        for($i = 0; $i < $nb; $i++) {
+            if (ctype_upper (substr($var, $i, 1))) 
+                $retour = 'majuscule';
+        }
+        return($retour);
     }
     
     public function __destruct()

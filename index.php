@@ -21,7 +21,7 @@ if ($session->user_login() == 'user not confirm')
 		$CPrint = new CPrint();
     	$CPrint->content("....Votre inscription n'est pas validée<br />Un mail de validation vient de vous être envoyé pour confirmer votre inscription", 'msg_err');
     	$CInscription = new CInscription();
-    	$CInscription->send_validation($email, $lignes->Prenom, $lignes->Nom, $lignes->Keyconfirm);
+    	$CInscription->send_validation($email, $lignes->Prenom, $lignes->Nom, $lignes->Keyuser);
 	}
 
 exit;

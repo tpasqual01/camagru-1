@@ -24,12 +24,13 @@ if ($user_ckeck == 'user not confirmed')
 if ($user_ckeck == 'user password bad')
     {
         $content = "Votre Mot de passe n'est pas valide<br />Vérifiez votre saisie";
+        if ($CSession->ismajuscule($_POST['Password']) == 'majuscule') $content .= "<br />Vérifiez les majuscules de votre mot de passe";
         $class_msg = 'msg_err';
         $aff_formulaire = 'yes';
     }
 if ($user_ckeck == 'user not exit')
     {
-        $content = "Votre Login n'existe pas dans la base<br />Vérifiez votre saisie";
+        $content = $_POST['email']."Votre Login n'existe pas dans la base<br />Vérifiez votre saisie";
         $class_msg = 'msg_err';
         $aff_formulaire = 'yes';
     }
@@ -37,6 +38,9 @@ if ($user_ckeck == 'user not exit')
 require_once('head.php');
 require_once('header.php');
 print('<div id="main">');
+
+$CPrint = new CPrint();
+if ($content) $CPrint->content($content, $class_msg);
 
 if ( $aff_formulaire == 'yes' )
 {
@@ -49,8 +53,6 @@ $TabForm[] = $login->InputLabel("Password", "Password", "Password");
 $TabForm[] = $login->InputPassword("Password", "Password");
 $TabForm[] = $login->Submit("Envoyer", "Envoyer");
 
-$CPrint = new CPrint();
-if ($content) $CPrint->content($content, $class_msg);
 $CPrint->Form('Login', $TabForm);
 $CPrint->content( 'Mot de passe oublié  : <a href="pwd_reinit.php" target="_self">Réinitialisation</a>', 'lien');
 $CPrint->content( 'Inscription : <a href="register.php" target="_self">S\'enregister</a>', 'lien');

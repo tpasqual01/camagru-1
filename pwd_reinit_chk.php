@@ -24,7 +24,7 @@ if ($user_exist == 'yes')
 
 if ($user_exist == 'no')
 	{
-		$CPrint->content('le mail : '.$_POST['email'].' n\'existe pas dans la base'); 
+		$CPrint->content('le mail : '.$_POST['email'].' n\'existe pas dans la base', 'msg_err'); 
 		$suite = 'index.php';
 	
  }

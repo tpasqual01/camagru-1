@@ -49,6 +49,9 @@ if (isset($_POST['Envoyer']) == TRUE)
 	}
 }
 
+$CPrint = new CPrint();
+if ($content) $CPrint->content($content, 'content');
+
 if ( $aff_formulaire == 'yes' )
 {
 	$TabForm = array();
@@ -76,8 +79,8 @@ if ( $aff_formulaire == 'yes' )
 	$TabForm[] = $inscription->Submit("Envoyer", "Envoyer");
 
 	print('<div id="main">');
-	$CPrint = new CPrint();
-	if ($content) $CPrint->content($content);
+
+
 	$CPrint->Form('Inscriptions', $TabForm);
 }
 print('</div>');	

@@ -17,10 +17,10 @@ else
 			}
 			else
 			{
-				$CPrint->titre('Votre session n\'existe pas');
+				$CPrint->content('Votre session n\'existe pas', 'msg_err');
 
 			}
-		$CPrint->content('<a href="index.php"> Retour à l\'accueil</a>');
+		$CPrint->content('<a href="index.php"> Retour à l\'accueil</a>', 'content');
 		print('</div>');	
 		print '
     	<script  type="text/javascript">

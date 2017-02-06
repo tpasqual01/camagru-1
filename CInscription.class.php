@@ -21,34 +21,66 @@ Class CInscription
 //reset_password
 //remove_user
 
-    public function send_validation($email, $Prenom, $Nom, $Keyconfirm)
+    public function send_validation($email, $Prenom, $Nom, $Keyuser)
     {
 
         $sujet = 'Confirmation d\'inscription Camagru';
         $message = 'Bonjour '.$Prenom.' '. $Nom.'<br />';
         $message .= "Félicitations vous venez de vous inscrire sur Camagru.<br />
         Pour valider cette inscription, il ne vous reste plus qu'à cliquer sur le lien suivant :";
-        $message .= "<a href='http://$servername:8080/camagru/inscriptioncheck.php?key=$Keyconfirm'> Validez votre incription</a>";
+        $message .= "<a href='http://$this->servername:8080/camagru/inscriptioncheck.php?key=$key'> Validez votre incription</a>";
         $from = 'dlievre@student.42.fr';
 
         //$CInscription = new CInscription();
         $action = $this->send_email($email, $sujet, $message, $from);
-        if ($action == 'send_email') 
-            return('send_validation');
+        if ($action != 'send email') {print ('erreur'); exit;}
+        return($action);
+    }
+
+    public function send_reinitialisation($email)
+    {
+        $Prenom = 'af base'; $Nom = 'af base'; 
+        $CSession = new CSession();
+        $key = $CSession->maj_key($email);
+        print $key;
+        if ($key == 'maj key err') {print ('erreur'); exit;}
+        // gerer le compteur de tentatives de reinit
+        $sujet = 'Demande de réinitialisation Camagru';
+        $message = 'Bonjour '.$Prenom.' '. $Nom.'<br />';
+        $message .= "Vous avez demandé la réinitialisation de votre mot de passe Camagru.<br />
+        Pour le changer, il ne vous reste plus qu'à cliquer sur le lien suivant : ";
+        $message .= "<a href='http://$this->servername:8080/camagru/pwd_reinit_chk.php?key=$key'> Réinitialiser votre mot de passe</a>";
+        $from = 'dlievre@student.42.fr';
+
+        //$CInscription = new CInscription();
+        $action = $this->send_email($email, $sujet, $message, $from);
+        if ($action != 'send email') {print ('send email erreur'); exit;}
+        return($action);
     }
 
     public function set_key_validation($email)
     {
-        $generatedKey = sha1(mt_rand(10000,99999).time().$email);
-        // $idunik = uniqid();
+        //$generatedKey = sha1(mt_rand(10000,99999).time().$email);
+        $generatedKey = uniqid();
+        // inscription de la key dans la base
+        
         return($generatedKey);
     }
 
     public function get_key_validation()
     {
         //print ('<p>destruct</p>');
+
         return;
     }
+    /*public function set_key_reinit($email)
+    {
+        //$generatedKey = sha1(mt_rand(10000,99999).time().$email);
+        $generatedKey = uniqid();
+        // inscription de la key dans la base
+        
+        return($generatedKey);
+    }*/
 
     public function send_email($email, $sujet, $message, $from)
     {
@@ -62,10 +94,10 @@ Class CInscription
         $headers .= "From: ".$from."\r\nX-Mailer:PHP"; 
 
         if (mail($to, $sujet, $message, $headers))
-            return "send_email";
+            return "send email";
         else 
         {
-            $CPrint->content(" Erreur de transmission email, contactez le support");
+            $CPrint->content(" Erreur de transmission email, contactez le support", 'msg_err');
             exit;
         }
 
