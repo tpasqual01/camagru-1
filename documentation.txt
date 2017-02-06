@@ -9,10 +9,10 @@ Class CForm
 	Submit($Titre, $id)
 	
 Class CInscription
-	send_validation($email, $Prenom, $Nom, $Keyconfirm)	envoi un email de validation
+	send_validation($email, $Prenom, $Nom, $Keyuser)	envoi un email de validation
 	send_reinitialisation($email)	renvoi un mail de réinitialisation	
 	set_key_validation($email)		crée la clé de validation d'inscription
-	get_key_validation($email)			recupère la clé de validation d'inscription
+	get_key_validation($email)		recupère la clé de validation d'inscription
 	set_key_reinit($email)			réinitialise la clé pour le mot de passe
 	send_email($email, $sujet, $message, $from)
 	
