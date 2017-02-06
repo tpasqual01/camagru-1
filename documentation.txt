@@ -32,7 +32,8 @@ Class CSession
 	kill_session()				stop la session et les variables de session
 	static function doc()				return le contenu du fichier documentation
 	password_reinit ($email)		réinitialise le password avec la question secréte
-	function secure($var) ....
+	function secure($var)			requête SQL, permet de sécuriser en ajoutant '' a la variable
+	function ismajuscule ($var)		teste si il y a une majuscule, utile pour le mot de passe
 	
 //send_validation
 //cle_validation
