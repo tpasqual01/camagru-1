@@ -1,7 +1,7 @@
 Class CForm
 	FormTitre($titre)
 	Form($uri, $class, $method )
-	InputLabel($labelFor, $labelTitre, $id)
+	InputLabel($labelTitre, $id, $labelFor)
 	InputText($Titre, $id, $post)
 	InputMail($Titre, $id, $post)
 	InputSelect($Titre, $id, $tbl, $selected)
