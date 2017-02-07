@@ -58,7 +58,7 @@ Class CInscription
         return($action);
     }
 
-    public function set_key_validation($email)
+    public function set_key_validation()
     {
         //$generatedKey = sha1(mt_rand(10000,99999).time().$email);
         $generatedKey = uniqid();
