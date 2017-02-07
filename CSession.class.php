@@ -14,6 +14,7 @@ Class CSession
     public function __construct()
     {
         //print '__construct';
+        // a l'initialisation de la class on genere la variable de conenxion a la base
         $this->conn = new PDO('mysql:host='.$this->servername.';dbname='.$this->dbname, $this->username, $this->password);
         $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return;
@@ -25,9 +26,6 @@ Class CSession
         $Password = strip_tags($_POST['Password']);
         $retour = 'user not exit';
         try {
-            
-           // $conn = new PDO('mysql:host='.$this->servername.';dbname='.$this->dbname, $this->username, $this->password);
-            //$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $rq = $this->secure("SELECT Id, Nom, Prenom, email, Password, Confirm, Keyuser FROM $this->tbl WHERE email = '$email'");
             $requete = $this->conn->prepare($rq); //
             $requete->execute();
@@ -57,8 +55,6 @@ Class CSession
     {
         $generatedKey = uniqid();
         try {
-            //$conn = new PDO('mysql:host='.$this->servername.';dbname='.$this->dbname, $this->username, $this->password);
-            //$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $rq = $this->secure("UPDATE $this->tbl SET Keyuser = '$generatedKey' WHERE email = '$email'");
             $requete = $this->conn->prepare($rq); 
             $requete->execute();
@@ -84,8 +80,6 @@ Class CSession
         $email = strip_tags($_POST['email']);
        ///   securisation : https://openclassrooms.com/courses/securite-php-securiser-les-flux-de-donnees
         try {
-            //$conn = new PDO('mysql:host='.$this->servername.';dbname='.$this->dbname, $this->username, $this->password);
-            //$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             //$requete = $this->conn->prepare("SELECT email FROM $this->tbl WHERE email = :email"); 
             //$requete->bindValue(':email', $email, PDO::PARAM_STR);
             $rq = $this->secure("SELECT email FROM $this->tbl WHERE email = '$email'");
@@ -123,9 +117,7 @@ Class CSession
         // contre les injection sql : https://openclassrooms.com/courses/pdo-comprendre-et-corriger-les-erreurs-les-plus-frequentes
 
         try {
-            //$conn = new PDO('mysql:host='.$this->servername.';dbname='.$this->dbname, $this->username, $this->password);
-            //$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $rq = $this->secure("INSERT INTO  $this->tbl (Nom, Prenom, email, Password, Confirm, Keyuser, cpt_reinit, Info) VALUES ('$_POST['Nom']', '$_POST['Prenom']', '$email', '$_POST['Password']', '$Confirm.', '$Keyuser', '$cpt_reinit', 'info'");
+            $rq = $this->secure("INSERT INTO  $this->tbl (Nom, Prenom, email, Password, Confirm, Keyuser, cpt_reinit, Info) VALUES ('$_POST['Nom']', '$_POST['Prenom']', '$email', '$_POST['Password']', '$Confirm', '$Keyuser', '$cpt_reinit', 'info'");
 
 //$req = "INSERT INTO ". $this->tbl." (Nom, Prenom, email, Password, Confirm, Keyuser, cpt_reinit, Info) VALUES (".$this->quotesep($_POST['Nom']).$this->quotesep($_POST['Prenom']).$this->quotesep($email).$this->quotesep($_POST['Password']).$Confirm.', '.$this->quotesep($Keyuser).$cpt_reinit.", "."'info')";
             $requete = $this->conn->prepare($rq);
@@ -193,7 +185,8 @@ Class CSession
 
     function secure($var)
     {
-        return($var); // pour l'instant on ne fait rien car protege par 'value'
+        $var = strip_tags (string $var);
+        return($var); // pour l'instant on ne fait que le strip_tags car protege par 'value'
         //return (mysql_real_escape_string($var)); // ne fonctionne pas
         //return($var);
     }
