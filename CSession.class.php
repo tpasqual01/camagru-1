@@ -51,6 +51,30 @@ Class CSession
         return($retour);
     }
 
+        public function user_info($email)
+    {
+        if ($this->user_exist($email) == 'yes')
+        {}
+        $retour = 'user info not exit';
+        try {
+            $rq = $this->secure("SELECT Id, Nom, Prenom, email, Password, Confirm, Keyuser FROM $this->tbl WHERE email = '$email'");
+            $requete = $this->conn->prepare($rq); //
+            $requete->execute();
+            while($lignes = $requete->fetch(PDO::FETCH_OBJ)){
+                $tbl['email'] = $lignes->email;
+                $tbl['Nom'] = $lignes->Nom;
+                $tbl['Prenom'] = $lignes->Prenom;
+                $tbl['Password'] = $lignes->Password;
+                $tbl['Confirm'] = $lignes->Confirm;
+                $tbl['Keyuser'] = $lignes->Keyuser;
+                }
+            }
+        catch(PDOException $e)
+            { echo "Error Database : " . $e->getMessage(); }
+        //$conn = null;
+        return($tbl);
+    }
+
     public function maj_key($email)
     {
         $generatedKey = uniqid();

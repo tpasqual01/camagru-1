@@ -39,10 +39,12 @@ Class CInscription
 
     public function send_reinitialisation($email)
     {
-        $Prenom = 'af base'; $Nom = 'af base'; 
         $CSession = new CSession();
+        $tbl_info_user = $CSession->user_info($email);
+        $Prenom = $tbl_info_user['Prenom'];
+        $Nom = $tbl_info_user['Nom'];
         $key = $CSession->maj_key($email);
-        print $key;
+        //print $key;
         if ($key == 'maj key err') {print ('erreur'); exit;}
         // gerer le compteur de tentatives de reinit
         $sujet = 'Demande de réinitialisation Camagru';
