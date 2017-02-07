@@ -111,15 +111,13 @@ Class CSession
         $Password = strip_tags($_POST['Password']);
         $Confirm = 0;
         $CInscription = new CInscription();
-        $Keyuser = $CInscription->set_key_validation;
-        $cpt_reinit = 5;
+        $Keyuser = $CInscription->set_key_validation();
+        $Cpt_reinit = 5;
 
         // contre les injection sql : https://openclassrooms.com/courses/pdo-comprendre-et-corriger-les-erreurs-les-plus-frequentes
 
         try {
-            $rq = $this->secure("INSERT INTO  $this->tbl (Nom, Prenom, email, Password, Confirm, Keyuser, cpt_reinit, Info) VALUES ('$_POST['Nom']', '$_POST['Prenom']', '$email', '$_POST['Password']', '$Confirm', '$Keyuser', '$cpt_reinit', 'info'");
-
-//$req = "INSERT INTO ". $this->tbl." (Nom, Prenom, email, Password, Confirm, Keyuser, cpt_reinit, Info) VALUES (".$this->quotesep($_POST['Nom']).$this->quotesep($_POST['Prenom']).$this->quotesep($email).$this->quotesep($_POST['Password']).$Confirm.', '.$this->quotesep($Keyuser).$cpt_reinit.", "."'info')";
+            $rq = $this->secure("INSERT INTO $this->tbl (Nom, Prenom, email, Password, Confirm, Keyuser, Cpt_reinit, Info) VALUES ('$_POST[Nom]', '$_POST[Prenom]', '$email', '$_POST[Password]', '$Confirm', '$Keyuser', '$Cpt_reinit', 'Info')"); // ne pas mettre les '' dans $_POST['Nom']
             $requete = $this->conn->prepare($rq);
             $requete->execute();
 
@@ -185,7 +183,7 @@ Class CSession
 
     function secure($var)
     {
-        $var = strip_tags (string $var);
+        $var = strip_tags($var);
         return($var); // pour l'instant on ne fait que le strip_tags car protege par 'value'
         //return (mysql_real_escape_string($var)); // ne fonctionne pas
         //return($var);

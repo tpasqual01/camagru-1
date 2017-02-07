@@ -91,7 +91,7 @@ Class CInscription
         $to  = $email;
         $headers = "MIME-Version: 1.0\r\n"; 
         $headers .= "Content-type: text/html; ".$codageutf."\r\n"; 
-        $headers .= "From: ".$from."\r\nX-Mailer:PHP"; 
+        $headers .= "From: ".$from."\r\nX-Mailer:PHP/". phpversion();  // 'X-Mailer: PHP/' . phpversion();
 
         if (mail($to, $sujet, $message, $headers))
             return "send email";
