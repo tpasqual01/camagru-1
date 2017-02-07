@@ -4,24 +4,41 @@ require_once('includes_session.php');
 require_once('head.php');
 require_once('header.php');
 
+$CForm = new CForm;
+
 $aff_formulaire = 'yes';
-if (isset($_POST['Envoyer']) == TRUE)
-{
-	$CSession = new CSession();
-	$user_exist = $CSession->user_exist();
-	$CInscription = new CInscription();
-	$CPrint = new CPrint();
+
+if (isset($_POST['Envoyer']) == TRUE) // controle des champs
+	{
+		$TabFormChk["Nom"] = "Votre Nom";
+		$TabFormChk["email"] = "Votre Mail";
+		$TabFormChk["Password"] = "Password";
+		$TabFormChk["Passwordbis"] = "Confirmez le Password";
+		$TabFormChk["Reponse"] = "Réponse";
+
+		$error_field = $CForm->InputTextChk($TabFormChk);
+		
+	}
+
+if (isset($_POST['Envoyer']) == TRUE and !$error_field )
+	{
+		$CSession = new CSession();
+		$user_exist = $CSession->user_exist();
+		$CInscription = new CInscription();
+		$CPrint = new CPrint();
 
 	if ($user_exist != 'yes' and $user_exist != 'no') 
 	{ 
 		$content = 'Création impossible :'.$user_exist;
+		$class_msg = 'msg_err';
 		$aff_formulaire = 'yes';
 		//$suite = 'index.php';
 	}
 
 	if ($user_exist == 'yes')
 	{
-		$content = 'Erreur : Cet utilisateur existe dans la base'; 
+		$content = 'Erreur : Cet utilisateur existe dans la base';
+		$class_msg = 'msg_err'; 
 		$aff_formulaire = 'yes';
 		//$suite = 'register.php';
 	}
@@ -29,11 +46,13 @@ if (isset($_POST['Envoyer']) == TRUE)
 	if ($user_exist == 'no')
 	{
 		$content = 'Utilisateur à créer dans la base<br />'; 
+		$class_msg = 'content';
 		$action = $CSession->user_add();
 	//$action = 'ok'; /////// a remettre apres validation
 		if ($action == 'user_add' ) 
 		{
 			$content .= 'Utilisateur validé dans la base';
+			$class_msg = 'content';
 		//if ($CInscription->send_validation($_SESSION) == 'ok'){$print->content('send ok');}
 			$content .= '<br />Un mail de validation de compte vient de vous être envoyé à '.strip_tags($_POST['email']).'<br /> pour finaliser votre inscription';
 			$aff_formulaire = 'no';
@@ -42,6 +61,7 @@ if (isset($_POST['Envoyer']) == TRUE)
 		else
 		{
 			$content .= "Impossible de créer l'utilisateur";
+			$class_msg = 'msg_err';
 			$aff_formulaire = 'no';
 			//$suite = 'register.php';	
 		}
@@ -50,38 +70,47 @@ if (isset($_POST['Envoyer']) == TRUE)
 }
 
 $CPrint = new CPrint();
-if ($content) $CPrint->content($content, 'content');
+print('<div id="main">');
+$CPrint->titre('Inscription');
+if ($content) $CPrint->content($content, $class_msg);
 
 if ( $aff_formulaire == 'yes' )
 {
 	$TabForm = array();
 
-	$inscription = new CForm;
-	$TabForm[] = $inscription->Form('register.php', 'Form', 'POST');
-	$TabForm[] = $inscription->InputLabel("Votre Nom", "LabelNom", "Notused");// InputLabel(new = ($labelTitre, $id, $labelFor)
-	$TabForm[] = $inscription->InputText("Votre Nom", "Nom", $_POST['Nom']);
-	$TabForm[] = $inscription->InputLabel("Votre Prénom", "LabelPrenom", "Notused");
-	$TabForm[] = $inscription->InputText("Votre Prénom", "Prenom", $_POST['Prenom']);
-	$TabForm[] = $inscription->InputLabel("Votre Mail", "LabelMail", "Notused");
-	$TabForm[] = $inscription->InputMail("Votre Mail", "email", $_POST['email']);
-	$TabForm[] = $inscription->InputLabel("Password", "LabelPassword", "Notused");
-	$TabForm[] = $inscription->InputPassword("Password", "Password");
+	$CForm = new CForm;
+	$TabForm[] = $CForm->Form('register.php', 'Form', 'POST');
+	$TabForm[] = $CForm->InputLabel("Votre Nom *", "LabelNom", "Notused");// InputLabel(new = ($labelTitre, $id, $labelFor)
+	$TabForm[] = $CForm->InputText("Votre Nom", "Nom", $_POST['Nom'], '*');
+
+	$TabForm[] = $CForm->InputLabel("Votre Prénom", "LabelPrenom", "Notused");
+	$TabForm[] = $CForm->InputText("Votre Prénom", "Prenom", $_POST['Prenom'], '');
+	$TabForm[] = $CForm->InputLabel("Votre Mail *", "LabelMail", "Notused");
+	$TabForm[] = $CForm->InputMail("Votre Mail", "email", $_POST['email'], '*');
+
+	$TabForm[] = $CForm->InputLabel("Password *", "LabelPassword", "Notused");
+	$TabForm[] = $CForm->InputPassword("Password", "Password", '*');
+
+	$TabForm[] = $CForm->InputLabel("Confirmez le Password *", "LabelPassword", "Notused");
+	$TabForm[] = $CForm->InputPassword("Passwordbis", "Passwordbis", '*');
+
 
 	$Tabquestion[] = "Le nom de votre chien";
-	$Tabquestion[] = "Le prènom de votre meilleur ami";
+	$Tabquestion[] = "Le prénom de votre meilleur ami";
 	$Tabquestion[] = "Votre nom de jeune fille";
 	$Tabquestion[] = "Votre sport favori";
-	$TabForm[] = $inscription->InputLabel("Question secrète", "LabelQuestion", "Notused");
-	$TabForm[] = $inscription->InputSelect("Question secrète ", "Question", $Tabquestion, '3');
-	$TabForm[] = $inscription->InputLabel("Réponse", "LabelReponse", "Notused");
-	$TabForm[] = $inscription->InputText("Reponse", "Reponse", $_POST['Reponse']);
+	$TabForm[] = $CForm->InputLabel("Question secrète *", "LabelQuestion", "Notused");
+	$TabForm[] = $CForm->InputSelect("Question secrète ", "Question", $Tabquestion, '3', '*');
+	$TabForm[] = $CForm->InputLabel("Réponse *", "LabelReponse", "Notused");
+	$TabForm[] = $CForm->InputText("Reponse", "Reponse", $_POST['Reponse'], '*');
 
-	$TabForm[] = $inscription->Submit("Envoyer", "Envoyer");
+	$TabForm[] = $CForm->Submit("Envoyer", "Envoyer");
 
-	print('<div id="main">');
+	$CPrint->Form('', $TabForm);
 
+	if ($error_field) $CPrint->content($error_field, 'msg_err'); 
 
-	$CPrint->Form('Inscriptions', $TabForm);
+	$CPrint->content('* champ impératif', 'content');
 }
 print('</div>');	
 include ('footer.php');

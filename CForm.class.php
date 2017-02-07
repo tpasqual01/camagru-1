@@ -50,24 +50,22 @@ Class CForm{
         return('<LABEL for="'.$labelFor.'">'. $labelTitre."</LABEL>");
     }
 
-    public  function InputText($Titre, $id, $post)// , $required a ajouter
+    public  function InputText($Titre, $id, $post, $required)// , $required a ajouter
     {
-        //$value = $_POST[$id];
-        return('<INPUT type="text" name="'. $id.'" id="'. $id.'" value="'.$post.'">');
-        // !$id || !$labelFor
+        if ($required) $required = ' required';
+        return('<INPUT type="text" name="'. $id.'" id="'. $id.'" value="'.$post.'" '.$required.'>');
     }
 
-    public  function InputMail($Titre, $id, $post)
+    public  function InputMail($Titre, $id, $post, $required)
     {
-        //$value = $post;
-//                print('...'.$post. ' ...'. $id.'...');
-        return('<INPUT type="mail" name="'. $id.'" id="'. $id.'" value="'.$post.'" placeholder=" yourname@domain.com" alt="Email servira au login" required>');
-        // !$id || !$labelFor
+        if ($required) $required = ' required'; else $required = '';
+        return('<INPUT type="mail" name="'. $id.'" id="'. $id.'" value="'.$post.'" placeholder=" yourname@domain.com" alt="Email servira au login" '.$required.'>');
     }
 
-    public  function InputSelect($Titre, $id, $tbl, $selected)
+    public  function InputSelect($Titre, $id, $tbl, $selected, $required)
     {
-        $retour ='<select name='.$id.' id='.$id.'>';
+        if ($required) $required = ' required';
+        $retour ='<select name="'.$id.'"" id="'.$id.'"'.$required.'>';
         foreach ($tbl as $key => $value)
         {
             if ($key == $selected) {$option_select = ' selected';} else {$option_select = '';}
@@ -77,9 +75,10 @@ Class CForm{
         return($retour);
     }
 
-	public  function InputPassword($Titre, $id)
+	public  function InputPassword($Titre, $id, $required)
     {
-        return('<INPUT type="password" name="'. $id.'" id="'. $id.'" required>');
+        if ($required) $required = ' required';
+        return('<INPUT type="password" name="'. $id.'" id="'. $id.'"'.$required.'>');
         // !$id || !$labelFor
     }
 
@@ -89,7 +88,24 @@ Class CForm{
         // !$id || !$labelFor
     }
 
-
+public  function InputTextChk($tbl)// Form($Titre, $Tab)
+    {
+        $retour = '';
+        foreach ($tbl as $id => $label)
+        {
+            if (!$_POST[$id]) $retour .= 'champ '.$label.' à renseigner<br />';
+        }
+        return ($retour);
+    }
+public  function Ctrl_Password($tbl)// Form($Titre, $Tab)
+    {
+        $retour = '';
+        foreach ($tbl as $id => $label)
+        {
+            if (!$_POST[$id]) $retour .= 'champ '.$label.' à renseigner<br />';
+        }
+        return ($retour);
+    }
 }
 
 ?>

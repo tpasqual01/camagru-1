@@ -15,14 +15,17 @@ else
 		require_once('head.php');
 		require_once('header.php');
 		print('<div id="main">');
-		$CPrint->content('Vous avez demandé la réinitialisation de votre mot de passe<br /> ', 'content');
-		$CPrint->content('Complétez les informations ci-dessous pour valider votre demande<br /> ', 'content');
+		$class_msg = 'content';
+		$content = 'Vous avez demandé la réinitialisation de votre mot de passe<br /> ';
+		$content .= 'Complétez les informations ci-dessous pour valider votre demande<br /> ';
 
 		/*$CSession = new CSession();
 		$user_exist = $CSession->user_exist();
 		$CInscription = new CInscription();
 		$CPrint = new CPrint();*/
 
+$CPrint->Titre('Réinitialisation du Mot de passe', $class_msg);
+if ($content) $CPrint->content($content, $class_msg);
 
 if ( $aff_formulaire == 'yes' or 1 == 1)
 	{
@@ -47,7 +50,7 @@ if ( $aff_formulaire == 'yes' or 1 == 1)
 		$TabForm[] = $CForm->InputPassword("Passwordbis", "Passwordbis", '');
 		$TabForm[] = $CForm->Submit("Envoyer", "Envoyer");
 
-		$CPrint->Form('Réinitialisation du Mot de passe', $TabForm);
+		$CPrint->Form('', $TabForm);
 		//$CPrint->content( 'Mot de passe oublié  : <a href="pwd_reinit.php" target="_self">Réinitialisation</a>', 'lien');
 }
 

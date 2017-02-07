@@ -2,7 +2,17 @@
 session_start();
 require_once('includes_session.php');
 $aff_formulaire = 'yes';
-if (isset($_POST['Envoyer']) == TRUE)
+$CForm = new CForm;
+
+if (isset($_POST['Envoyer']) == TRUE) // controle des champs
+    {
+        $TabFormChk["email"] = "Votre Mail";
+        $TabFormChk["Password"] = "Password";
+
+        $error_field = $CForm->InputTextChk($TabFormChk);
+    }
+
+if (isset($_POST['Envoyer']) == TRUE and !$error_field)
 {
 $CSession = new CSession();
 $user_ckeck = $CSession->user_login();
@@ -30,7 +40,7 @@ if ($user_ckeck == 'user password bad')
     }
 if ($user_ckeck == 'user not exit')
     {
-        $content = $_POST['email']."Votre Login n'existe pas dans la base<br />Vérifiez votre saisie";
+        $content = " Votre Login ".$_POST['email']." n'existe pas dans la base<br />Vérifiez votre saisie";
         $class_msg = 'msg_err';
         $aff_formulaire = 'yes';
     }
@@ -40,22 +50,27 @@ require_once('header.php');
 print('<div id="main">');
 
 $CPrint = new CPrint();
+$CPrint->titre('Login');
 if ($content) $CPrint->content($content, $class_msg);
 
 if ( $aff_formulaire == 'yes' )
-{
-$TabForm = array();
-$login = new CForm;
-$TabForm[] = $login->Form('login.php', 'Form', 'POST');
-$TabForm[] = $login->InputLabel("Votre Mail", "LabelMail", "Mail");
-$TabForm[] = $login->InputMail("Votre Mail", "email", $_POST['email']);
-$TabForm[] = $login->InputLabel("Password", "LabelPassword", "LabelPassword");
-$TabForm[] = $login->InputPassword("Password", "Password"); // InputPassword($Titre, $id)
-$TabForm[] = $login->Submit("Envoyer", "Envoyer");
+    {
+    $TabForm = array();
 
-$CPrint->Form('Login', $TabForm);
-$CPrint->content( 'Mot de passe oublié  : <a href="pwd_reinit.php" target="_self">Réinitialisation</a>', 'lien');
-$CPrint->content( 'Inscription : <a href="register.php" target="_self">S\'enregister</a>', 'lien');
+    $TabForm[] = $CForm->Form('login.php', 'Form', 'POST');
+    $TabForm[] = $CForm->InputLabel("Votre Mail", "LabelMail", "Mail");
+    $TabForm[] = $CForm->InputMail("Votre Mail", "email", $_POST['email'], '*');
+    $TabForm[] = $CForm->InputLabel("Password", "LabelPassword", "LabelPassword");
+    $TabForm[] = $CForm->InputPassword("Password", "Password", '*'); // InputPassword($Titre, $id)
+    $TabForm[] = $CForm->Submit("Envoyer", "Envoyer");
+
+    $CPrint->Form('', $TabForm);
+
+    if ($error_field) $CPrint->content($error_field, 'msg_err');
+
+    $CPrint->content( 'Mot de passe oublié  : <a href="pwd_reinit.php" target="_self">Réinitialisation</a>', 'lien');
+    $CPrint->content( 'Inscription : <a href="register.php" target="_self">S\'enregister</a>', 'lien');
+
 
 }
 print('</div>');
