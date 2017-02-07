@@ -25,7 +25,8 @@ Class CPrint
 	content_array($Tab, $class)		affiche un tableau a 2 dimensions
 	
 Class CSession
-	user_login()				vérifie si le user est valide	
+	user_login()				vérifie si le user est valide
+	user_info($email)			lit dans la base les info d'un user
 	user_add()				ajoute le nouvel user dans la table
 	send_validation()			envoi un email de validation
 	user_exist()				vérifie si l'user est dans la table
