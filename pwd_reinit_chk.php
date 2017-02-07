@@ -2,65 +2,75 @@
 // on recupere le mail pour envoyer un lien de reinitialisation de password
 require_once('includes_session.php');
 $CPrint = new CPrint();
+$CForm = new CForm;
+
+$aff_formulaire = 'yes';
+
 $CPrint->content(' key '.$_GET['key'], 'content');
+if (!$_GET['key'] and !$_SESSION['key']) exit;
+//if exist($_GET['key']) print 'check en cours';// a faire pour s'assurer que la cle existe pour reinitialiser
+if ($_GET['key']) $_SESSION['key'] = $_GET['key']; // uniquement si la key est valide , a faire
+
+require_once('head.php');
+require_once('header.php');
+print('<div id="main">');
+
 // on recherche l'utilisateur de cette key, puis on demande la question secrete
 
-if (!$_GET['key']) 
-	{
-		exit;
-	}
-else
-	{
+if (1 == 1)
+{
 
-		require_once('head.php');
-		require_once('header.php');
-		print('<div id="main">');
+		if (isset($_POST['Envoyer']) == TRUE) // controle des champs
+		{
+			$TabFormChk["email"] = "Votre Mail";
+			$TabFormChk["Password"] = "Password";
+			$TabFormChk["Passwordbis"] = "Confirmez le Password";
+			$TabFormChk["Reponse"] = "Réponse";
+
+			$error_field = $CForm->InputTextChk($TabFormChk);	
+		}
+
 		$class_msg = 'content';
 		$content = 'Vous avez demandé la réinitialisation de votre mot de passe<br /> ';
 		$content .= 'Complétez les informations ci-dessous pour valider votre demande<br /> ';
 
+if (isset($_POST['Envoyer']) == TRUE and !$error_field )
+	{
+		print 'controle<br />'; 
 		/*$CSession = new CSession();
 		$user_exist = $CSession->user_exist();
 		$CInscription = new CInscription();
 		$CPrint = new CPrint();*/
+	}
 
 $CPrint->Titre('Réinitialisation du Mot de passe', $class_msg);
 if ($content) $CPrint->content($content, $class_msg);
 
-if ( $aff_formulaire == 'yes' or 1 == 1)
+if ( $aff_formulaire == 'yes')
 	{
-		$CForm = new CForm;
-
 		$TabForm = array();
-		$login = new CForm;
 		$TabForm[] = $CForm->Form('pwd_reinit_chk.php', 'Form', 'POST');
-		$TabForm[] = $CForm->InputLabel("Mail", "Votre Mail", "Mail");
-		$TabForm[] = $CForm->InputMail("Votre Mail", "email", $_POST['email']);
-// aller recuperer la question secrete de ce user et l'afficher
+		$TabForm[] = $CForm->InputLabel("Mail", "Votre Mail * ", "Mail");
+		$TabForm[] = $CForm->InputMail("Votre Mail", "email", $_POST['email'], '*');
+// aller recuperer la question secrete de cet user et l'afficher
 		$Tabquestion[] = "Le nom de votre chien";
 
-		$TabForm[] = $CForm->InputLabel("Question secrète", "LabelQuestion", "Notused");
-		$TabForm[] = $CForm->InputSelect("Question secrète ", "Question", $Tabquestion, '0');
-		$TabForm[] = $CForm->InputLabel("Réponse", "LabelReponse", "Notused");
-		$TabForm[] = $CForm->InputText("Reponse", "Reponse", $_POST['Reponse']);
+		$TabForm[] = $CForm->InputLabel("Question secrète *", "LabelQuestion", "Notused");
+		$TabForm[] = $CForm->InputSelect("Question secrète ", "Question", $Tabquestion, '0', '*');
+		$TabForm[] = $CForm->InputLabel("Réponse *", "LabelReponse", "Notused");
+		$TabForm[] = $CForm->InputText("Reponse", "Reponse", $_POST['Reponse'], '*');
 
-		$TabForm[] = $CForm->InputLabel("Votre nouveau Password", "LabelPassword", "LabelPassword"); // InputLabel($labelTitre, $id, $labelFor)
-		$TabForm[] = $CForm->InputPassword("Password", "Password", ''); // InputPassword($Titre, $id)
-		$TabForm[] = $CForm->InputLabel("Confirmez le Password", "LabelPasswordbis", "LabelPasswordbis");
-		$TabForm[] = $CForm->InputPassword("Passwordbis", "Passwordbis", '');
+		$TabForm[] = $CForm->InputLabel("Votre nouveau Password * ", "LabelPassword", "LabelPassword"); // InputLabel($labelTitre, $id, $labelFor)
+		$TabForm[] = $CForm->InputPassword("Password", "Password", '*'); // ($Titre, $id, $required)
+		$TabForm[] = $CForm->InputLabel("Confirmez le Password * ", "LabelPasswordbis", "LabelPasswordbis");
+		$TabForm[] = $CForm->InputPassword("Passwordbis", "Passwordbis", '*');
 		$TabForm[] = $CForm->Submit("Envoyer", "Envoyer");
+
+		if ($error_field) $CPrint->content($error_field, 'msg_err');
 
 		$CPrint->Form('', $TabForm);
 		//$CPrint->content( 'Mot de passe oublié  : <a href="pwd_reinit.php" target="_self">Réinitialisation</a>', 'lien');
 }
-
-
-
-
-
-
-
-
 
 print ('<p>Continuer <a href="'.$suite.'"> Go </a></p>');
 
