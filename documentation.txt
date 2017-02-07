@@ -2,11 +2,12 @@ Class CForm
 	FormTitre($titre)
 	Form($uri, $class, $method )
 	InputLabel($labelTitre, $id, $labelFor)
-	InputText($Titre, $id, $post)
-	InputMail($Titre, $id, $post)
-	InputSelect($Titre, $id, $tbl, $selected)
-	InputPassword($Titre, $id)
+	InputText($Titre, $id, $post, $required)
+	InputMail($Titre, $id, $post, $required)
+	InputSelect($Titre, $id, $tbl, $required, $selected)
+	InputPassword($Titre, $id, $required)
 	Submit($Titre, $id)
+	function InputTextChk($tbl)		contrôle si les champs ne sont pas vide
 	
 Class CInscription
 	send_validation($email, $Prenom, $Nom, $Keyuser)	envoi un email de validation
