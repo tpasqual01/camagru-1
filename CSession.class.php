@@ -158,6 +158,8 @@ Class CSession
         public function user_add()
     {
         $email = strip_tags($_POST['email']);
+        $Nom = strip_tags($_POST['Nom']);
+        $Prenom = strip_tags($_POST['Prenom']);
         $Password = $this->user_pass_hash($_POST['Password']);
         $Confirm = 0;
         $CInscription = new CInscription();
@@ -167,13 +169,13 @@ Class CSession
         // contre les injection sql : https://openclassrooms.com/courses/pdo-comprendre-et-corriger-les-erreurs-les-plus-frequentes
 
         try {
-            $rq = $this->secure("INSERT INTO $this->tbl (Nom, Prenom, email, Password, Confirm, Keyuser, Cpt_reinit, Questionsecrete, Reponsesecrete, Info) VALUES ('$_POST[Nom]', '$_POST[Prenom]', '$email', '$Password', '$Confirm', '$Keyuser', '$Cpt_reinit', '$_POST[Question]', '$_POST[Reponse]', 'Info')"); // ne pas mettre les '' dans $_POST['Nom']
+            $rq = $this->secure("INSERT INTO $this->tbl (Nom, Prenom, email, Password, Confirm, Keyuser, Cpt_reinit, Questionsecrete, Reponsesecrete, Info) VALUES ('$Nom', '$Prenom', '$email', '$Password', '$Confirm', '$Keyuser', '$Cpt_reinit', '$_POST[Question]', '$_POST[Reponse]', 'Info')"); // ne pas mettre les '' dans $_POST['Nom']
             $requete = $this->conn->prepare($rq);
             $requete->execute();
 
             // envoi validation par mail uniquement si base maj
             //print ($email.' '.$lignes->Prenom.' '.$lignes->Nom.' '.$lignes->Keyuser);
-            $CInscription->send_validation($email, $lignes->Prenom, $lignes->Nom, $lignes->Keyuser);
+            $CInscription->send_validation($email, $Prenom, $Nom, $Keyuser);
             }
         catch(PDOException $e)
             { echo "Error Database : " . $e->getMessage(); print 'Erreur user_add'; exit;}

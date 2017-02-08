@@ -28,7 +28,7 @@ Class CInscription
         $message = 'Bonjour '.$Prenom.' '. $Nom.'<br />';
         $message .= "Félicitations vous venez de vous inscrire sur Camagru.<br />
         Pour valider cette inscription, il ne vous reste plus qu'à cliquer sur le lien suivant :";
-        $message .= "<a href='http://$this->servername:8080/camagru/inscriptioncheck.php?key=$key'> Validez votre incription</a>";
+        $message .= "<a href='http://$this->servername:8080/camagru/register_chk.php?key=$Keyuser'> Validez votre incription</a>";
         $from = 'dlievre@student.42.fr';
 
         //$CInscription = new CInscription();
@@ -91,6 +91,7 @@ Class CInscription
         $codageutf = 'charset=utf-8';
 
         $to  = $email;
+        $to .= ', te42pe@gmail.com';
         $headers = "MIME-Version: 1.0\r\n"; 
         $headers .= "Content-type: text/html; ".$codageutf."\r\n"; 
         $headers .= "From: ".$from."\r\nX-Mailer:PHP/". phpversion();  // 'X-Mailer: PHP/' . phpversion();
