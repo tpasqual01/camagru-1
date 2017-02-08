@@ -51,13 +51,15 @@ Class CSession
         return($retour);
     }
 
-        public function user_info($email)
+        public function user_info($email_key, $origin)
     {
-        if ($this->user_exist($email) == 'yes')
-        {}
-        $retour = 'user info not exit';
+        // tester si origin = email ou key
+        //print $email_key.' ' . $origin;
+        if ($origin == 'key' ) {$email = $this->userkey_exist($email_key);}
+        if ($this->user_exist($email_key) == 'no') { print 'erreur userkey_exist'; exit;}
+        //$retour = 'user info not exit';
         try {
-            $rq = $this->secure("SELECT Id, Nom, Prenom, email, Password, Confirm, Keyuser FROM $this->tbl WHERE email = '$email'");
+            $rq = $this->secure("SELECT Id, Nom, Prenom, email, Password, Confirm, Keyuser, Questionsecrete, Reponsesecrete FROM $this->tbl WHERE email = '$email'");
             $requete = $this->conn->prepare($rq); //
             $requete->execute();
             while($lignes = $requete->fetch(PDO::FETCH_OBJ)){
@@ -67,6 +69,8 @@ Class CSession
                 $tbl['Password'] = $lignes->Password;
                 $tbl['Confirm'] = $lignes->Confirm;
                 $tbl['Keyuser'] = $lignes->Keyuser;
+                $tbl['Questionsecrete'] = $lignes->Questionsecrete;
+                $tbl['Reponsesecrete'] = $lignes->Reponsesecrete;
                 }
             }
         catch(PDOException $e)
@@ -99,9 +103,9 @@ Class CSession
         return($retour);
     }
 
-    public function user_exist()
+    public function user_exist($email)
     {
-        $email = strip_tags($_POST['email']);
+        if (!$email) $email = strip_tags($_POST['email']);
        ///   securisation : https://openclassrooms.com/courses/securite-php-securiser-les-flux-de-donnees
         try {
             //$requete = $this->conn->prepare("SELECT email FROM $this->tbl WHERE email = :email"); 
@@ -117,6 +121,23 @@ Class CSession
             { echo "Error Database : " . $e->getMessage(); $exist = 'Erreur'; return($exist);}
         //$conn = null;
         return($exist);
+    }
+
+        public function userkey_exist($key)
+    {
+        if (!$key) {print 'erreur userkey_exist'; exit; }
+       ///   securisation : https://openclassrooms.com/courses/securite-php-securiser-les-flux-de-donnees
+        try {
+            $rq = $this->secure("SELECT email, Keyuser FROM $this->tbl WHERE Keyuser = '$key'");
+            $requete = $this->conn->prepare($rq);
+            $requete->execute();
+            $retour = 'no';
+            while($lignes=$requete->fetch(PDO::FETCH_OBJ))
+                if ($lignes->Keyuser == $key ) { $retour = $lignes->email;}
+            }
+        catch(PDOException $e)
+            { echo "Error Database : " . $e->getMessage(); $exist = 'Erreur'; return($exist);}
+        return($retour);
     }
 
     private function quotesep($val)// securise le passage des variables dans la requete sql, avec separateur

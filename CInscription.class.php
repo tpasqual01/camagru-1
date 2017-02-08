@@ -40,7 +40,7 @@ Class CInscription
     public function send_reinitialisation($email)
     {
         $CSession = new CSession();
-        $tbl_info_user = $CSession->user_info($email);
+        $tbl_info_user = $CSession->user_info($email, 'email');
         $Prenom = $tbl_info_user['Prenom'];
         $Nom = $tbl_info_user['Nom'];
         $key = $CSession->maj_key($email);

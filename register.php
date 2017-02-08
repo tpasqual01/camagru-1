@@ -94,11 +94,10 @@ if ( $aff_formulaire == 'yes' )
 	$TabForm[] = $CForm->InputLabel("Confirmez le Password *", "LabelPassword", "Notused");
 	$TabForm[] = $CForm->InputPassword("Passwordbis", "Passwordbis", '*');
 
-
-	$Tabquestion[] = "Le nom de votre chien";
+/*	$Tabquestion[] = "Le nom de votre chien";
 	$Tabquestion[] = "Le prénom de votre meilleur ami";
 	$Tabquestion[] = "Votre nom de jeune fille";
-	$Tabquestion[] = "Votre sport favori";
+	$Tabquestion[] = "Votre sport favori";*/
 	$TabForm[] = $CForm->InputLabel("Question secrète *", "LabelQuestion", "Notused");
 	$TabForm[] = $CForm->InputSelect("Question secrète ", "Question", $Tabquestion, '3', '*');
 	$TabForm[] = $CForm->InputLabel("Réponse *", "LabelReponse", "Notused");

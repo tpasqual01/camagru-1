@@ -23,7 +23,7 @@ if (isset($_POST['Reinit']) == TRUE) // controle des champs
 if (isset($_POST['Reinit']) == TRUE and !$error_field)
 {
 	$CSession = new CSession();
-	$user_exist = $CSession->user_exist();
+	$user_exist = $CSession->user_exist($_POST['email']);
 
 	if ($user_exist != 'yes' and $user_exist != 'no') 
 	{ 
@@ -40,7 +40,8 @@ if (isset($_POST['Reinit']) == TRUE and !$error_field)
 
 		if ($action == 'send email')
 		{
-			$content = 'Un mail de réinitialisation vient de vous être envoyé à l\'adresse '.$email;
+			$content = 'Un mail de réinitialisation vient de vous être envoyé à l\'adresse '.$email.'<br />';
+			$content .= 'Vérifiez par précaution votre dossier SPAM si nécessaire.';
 			$class_msg = 'content';
 			$aff_formulaire = 'no';
 		}

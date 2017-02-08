@@ -3,21 +3,27 @@
 require_once('includes_session.php');
 $CPrint = new CPrint();
 $CForm = new CForm;
+$CSession = new CSession();
 
 $aff_formulaire = 'yes';
 
 $CPrint->content(' key '.$_GET['key'], 'content');
 if (!$_GET['key'] and !$_SESSION['key']) exit;
 //if exist($_GET['key']) print 'check en cours';// a faire pour s'assurer que la cle existe pour reinitialiser
-if ($_GET['key']) $_SESSION['key'] = $_GET['key']; // uniquement si la key est valide , a faire
+// on doit passer par une session pour gerer ensuite le formulaire car on perd le get key
+if ($_GET['key']) $_SESSION['key'] = $_GET['key']; // uniquement si la key est valide , a finir 
 
 require_once('head.php');
 require_once('header.php');
 print('<div id="main">');
 
 // on recherche l'utilisateur de cette key, puis on demande la question secrete
-
-if (1 == 1)
+if ($CSession->userkey_exist($_SESSION['key']) == 'no') 
+	{
+		print 'erreur key not exist : '. $_SESSION['key'];
+		exit;
+	}
+else
 {
 
 		if (isset($_POST['Envoyer']) == TRUE) // controle des champs
@@ -37,6 +43,15 @@ if (1 == 1)
 if (isset($_POST['Envoyer']) == TRUE and !$error_field )
 	{
 		print 'controle<br />'; 
+		// on check la key et le mail, la reponse 
+		print $_POST['email'].'>>>';
+		$tbl_info_user = $CSession->user_info($_POST['email'], 'email');
+print_r($tbl_info_user);print '...<br />';
+print $tbl_info_user['email'] .' '. $_POST['email'] .'<br/> '. $tbl_info_user['Questionsecrete'] .' '. $_POST['Questionsecrete'] .'<br/> '. $tbl_info_user['Reponsesecrete'] .'  '. $_POST['Reponsesecrete']; print ':::<br />';
+		if ($tbl_info_user['email'] == $_POST['email'] and $tbl_info_user['Questionsecrete'] == $_POST['Questionsecrete'] and $tbl_info_user['Reponsesecrete'] == $_POST['Reponsesecrete']) { print 'update base';}
+		else
+			{ print 'erreur !!!!';}
+
 		/*$CSession = new CSession();
 		$user_exist = $CSession->user_exist();
 		$CInscription = new CInscription();
@@ -53,10 +68,17 @@ if ( $aff_formulaire == 'yes')
 		$TabForm[] = $CForm->InputLabel("Mail", "Votre Mail * ", "Mail");
 		$TabForm[] = $CForm->InputMail("Votre Mail", "email", $_POST['email'], '*');
 // aller recuperer la question secrete de cet user et l'afficher
-		$Tabquestion[] = "Le nom de votre chien";
+
+
+		//$tbl_info_user = $CSession->user_info($email, 'email');
+        $tbl_info_user = $CSession->user_info($_SESSION['key'], 'key');
+       // ok ici  print_r($tbl_info_user);
+        $Questionsecrete = $tbl_info_user['Questionsecrete'];
+        
+		//$Tabquestion[] = "Le nom de votre chien";
 
 		$TabForm[] = $CForm->InputLabel("Question secrète *", "LabelQuestion", "Notused");
-		$TabForm[] = $CForm->InputSelect("Question secrète ", "Question", $Tabquestion, '0', '*');
+		$TabForm[] = $CForm->InputSelect("Question secrète ", "Question", $Tabquestion, $Questionsecrete, '*');
 		$TabForm[] = $CForm->InputLabel("Réponse *", "LabelReponse", "Notused");
 		$TabForm[] = $CForm->InputText("Reponse", "Reponse", $_POST['Reponse'], '*');
 
