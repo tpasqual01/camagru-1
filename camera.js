@@ -1,27 +1,26 @@
 
-
-
-  // Prefer camera resolution nearest to 1280x720.
-var constraints = { audio: false, video: { width: 1280, height: 720 } }; 
-
-navigator.mediaDevices.getUserMedia(constraints)
-.then(function(mediaStream)
-{
-  var video = document.querySelector('#video');
-  video.srcObject = mediaStream;
-  //var canvas = document.querySelector('#canvas');
- //alert(canvas+this.canvas.width);
-  video.onloadedmetadata = function(e)
-  { video.play(); };
-})
-.catch(function(err) { console.log(err.name + ": " + err.message); })
-
 class Cfusion
 {
   constructor(fond)
   {
+
+    alert('fond construct : '+this.fond+' ' +fond);
     this.fond_select = fond; // this est important pour une variable de la classe et non de fonction
     //alert(' fond initial '+this.fond_select);
+
+      // Prefer camera resolution nearest to 1280x720.
+    var constraints = { audio: false, video: { width: 1280, height: 720 } }; 
+
+    navigator.mediaDevices.getUserMedia(constraints)
+    .then(function(mediaStream)
+    {
+      var video = document.querySelector('#video');
+      video.srcObject = mediaStream;
+      //var canvas = document.querySelector('#canvas');
+      //alert(canvas+this.canvas.width);
+      video.onloadedmetadata = function(e) { video.play(); };
+    })
+    .catch(function(err) { console.log(err.name + ": " + err.message); })
   }
 
   draw()
