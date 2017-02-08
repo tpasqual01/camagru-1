@@ -32,6 +32,8 @@ Class CSession
 	user_exist($email)			vérifie si l'user est dans la table
 	userkey_exist($key)			vérifie si la key existe
 	set_session($email, $Nom, $Prenom, $valid)	set les variables de session
+	user_pass_hash($var)			génère le hash du mot de passe
+	user_pass_modify($email, $pass)			modification mot de passe
 	user_list()				liste les users  (réservé superuser)
 	get_Profile()				recupère les info de sessions
 	kill_session()				stop la session et les variables de session
