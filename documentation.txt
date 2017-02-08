@@ -29,7 +29,8 @@ Class CSession
 	user_info($email)			lit dans la base les info d'un user
 	user_add()				ajoute le nouvel user dans la table
 	send_validation()			envoi un email de validation
-	user_exist()				vérifie si l'user est dans la table
+	user_exist($email)			vérifie si l'user est dans la table
+	userkey_exist($key)			vérifie si la key existe
 	set_session($email, $Nom, $Prenom, $valid)	set les variables de session
 	user_list()				liste les users  (réservé superuser)
 	get_Profile()				recupère les info de sessions
