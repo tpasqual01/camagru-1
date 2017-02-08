@@ -23,7 +23,7 @@ Class CSession
     public function user_login()
     {
         $email = strip_tags($_POST['email']);
-        $Password = strip_tags($_POST['Password']);
+        $Password = $this->user_pass_hash($_POST['Password']);
         $retour = 'user not exit';
         try {
             $rq = $this->secure("SELECT Id, Nom, Prenom, email, Password, Confirm, Keyuser FROM $this->tbl WHERE email = '$email'");
@@ -56,8 +56,13 @@ Class CSession
         // tester si origin = email ou key
         //print $email_key.' ' . $origin;
         if ($origin == 'key' ) {$email = $this->userkey_exist($email_key);}
-        if ($this->user_exist($email_key) == 'no') { print 'erreur userkey_exist'; exit;}
-        //$retour = 'user info not exit';
+        if ($origin == 'email' ) {$email = $email_key;}
+
+        if ($this->user_exist($email) == 'no') // le mail n'est pas bon
+        { 
+            $tbl['email'] = 'no';
+            return ($tbl);
+        } 
         try {
             $rq = $this->secure("SELECT Id, Nom, Prenom, email, Password, Confirm, Keyuser, Questionsecrete, Reponsesecrete FROM $this->tbl WHERE email = '$email'");
             $requete = $this->conn->prepare($rq); //
@@ -125,7 +130,7 @@ Class CSession
 
         public function userkey_exist($key)
     {
-        if (!$key) {print 'erreur userkey_exist'; exit; }
+        if (!$key) {print 'erreur in userkey_exist'; exit; }
        ///   securisation : https://openclassrooms.com/courses/securite-php-securiser-les-flux-de-donnees
         try {
             $rq = $this->secure("SELECT email, Keyuser FROM $this->tbl WHERE Keyuser = '$key'");
@@ -153,7 +158,7 @@ Class CSession
         public function user_add()
     {
         $email = strip_tags($_POST['email']);
-        $Password = strip_tags($_POST['Password']);
+        $Password = $this->user_pass_hash($_POST['Password']);
         $Confirm = 0;
         $CInscription = new CInscription();
         $Keyuser = $CInscription->set_key_validation();
@@ -162,7 +167,7 @@ Class CSession
         // contre les injection sql : https://openclassrooms.com/courses/pdo-comprendre-et-corriger-les-erreurs-les-plus-frequentes
 
         try {
-            $rq = $this->secure("INSERT INTO $this->tbl (Nom, Prenom, email, Password, Confirm, Keyuser, Cpt_reinit, Info) VALUES ('$_POST[Nom]', '$_POST[Prenom]', '$email', '$_POST[Password]', '$Confirm', '$Keyuser', '$Cpt_reinit', 'Info')"); // ne pas mettre les '' dans $_POST['Nom']
+            $rq = $this->secure("INSERT INTO $this->tbl (Nom, Prenom, email, Password, Confirm, Keyuser, Cpt_reinit, Questionsecrete, Reponsesecrete, Info) VALUES ('$_POST[Nom]', '$_POST[Prenom]', '$email', '$Password', '$Confirm', '$Keyuser', '$Cpt_reinit', '$_POST[Question]', '$_POST[Reponse]', 'Info')"); // ne pas mettre les '' dans $_POST['Nom']
             $requete = $this->conn->prepare($rq);
             $requete->execute();
 
@@ -174,6 +179,32 @@ Class CSession
             { echo "Error Database : " . $e->getMessage(); print 'Erreur user_add'; exit;}
         //$conn = null;
         return('user_add');
+    }
+
+    function user_pass_modify($email, $pass)
+    {
+        $hashkey = $this->user_pass_hash($pass);
+        try {
+            $rq = $this->secure("UPDATE $this->tbl SET Password = '$hashkey' WHERE email = '$email'");
+            
+            $requete = $this->conn->prepare($rq); 
+            $requete->execute();
+            if ($requete)
+                $retour = 'ok';
+            else
+                $retour = 'Erreur modification password';
+            }
+
+        catch(PDOException $e)
+            { echo "Error Database : " . $e->getMessage(); $exist = 'Erreur'; return($exist);}
+        //$conn = null;
+        return($retour);
+    }
+
+    function user_pass_hash($pass)
+    {
+        
+        return (hash('whirlpool',$pass));
     }
 
     public function user_list() // reservé superuser

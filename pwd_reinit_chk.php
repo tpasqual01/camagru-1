@@ -33,7 +33,9 @@ else
 			$TabFormChk["Passwordbis"] = "Confirmez le Password";
 			$TabFormChk["Reponse"] = "Réponse";
 
-			$error_field = $CForm->InputTextChk($TabFormChk);	
+			$error_field = $CForm->InputTextChk($TabFormChk);
+			if 	($_POST['Password'] != $_POST['Passwordbis']) $error_field .= "Les mots de passe ne sont pas identiques";
+
 		}
 
 		$class_msg = 'content';
@@ -44,18 +46,42 @@ if (isset($_POST['Envoyer']) == TRUE and !$error_field )
 	{
 		print 'controle<br />'; 
 		// on check la key et le mail, la reponse 
-		print $_POST['email'].'>>>';
+		//print $_POST['email'].'>>>';
 		$tbl_info_user = $CSession->user_info($_POST['email'], 'email');
-print_r($tbl_info_user);print '...<br />';
-print $tbl_info_user['email'] .' '. $_POST['email'] .'<br/> '. $tbl_info_user['Questionsecrete'] .' '. $_POST['Questionsecrete'] .'<br/> '. $tbl_info_user['Reponsesecrete'] .'  '. $_POST['Reponsesecrete']; print ':::<br />';
-		if ($tbl_info_user['email'] == $_POST['email'] and $tbl_info_user['Questionsecrete'] == $_POST['Questionsecrete'] and $tbl_info_user['Reponsesecrete'] == $_POST['Reponsesecrete']) { print 'update base';}
-		else
-			{ print 'erreur !!!!';}
+		// verification que la key est bien associee au mail
 
-		/*$CSession = new CSession();
-		$user_exist = $CSession->user_exist();
-		$CInscription = new CInscription();
-		$CPrint = new CPrint();*/
+		if ($tbl_info_user['email'] == 'no') 
+			{
+				$content = "Erreur Email invalide";
+				$class_msg = "msg_err";
+				$aff_formulaire = 'yes';
+			}
+			else
+			{
+				$content = '';
+				if  ($_POST['email'] != $tbl_info_user['email'] or $_SESSION['key'] != $tbl_info_user['Keyuser']) $content .= 'key non valide pour cet utilisateur<br />';
+				print '...'.$tbl_info_user['Questionsecrete'] .' '. $_POST['Question'] .' '. $tbl_info_user['Reponsesecrete'] .' '. $_POST['Reponse'];
+				if ( $tbl_info_user['Questionsecrete'] != $_POST['Question'] or $tbl_info_user['Reponsesecrete'] != $_POST['Reponse']) $content .= 'Question secrète non valide<br />';
+				if (!$content)
+				{
+					print '<br/>update base<br/>'; 
+					print '...'.$tbl_info_user['email'];
+					print '...'.$_POST['Password'];
+					if ($CSession->user_pass_modify($tbl_info_user['email'], $_POST['Password']) == 'ok')
+					{
+						$content ="Mot de passe changé avec succès";
+						$class_msg = "content";
+						$aff_formulaire = 'no';
+					}
+					else
+					{
+						$content ="Erreur modification mot de passe";
+						$class_msg = "msg_err";
+						$aff_formulaire = 'no';
+					}
+				}
+
+			}
 	}
 
 $CPrint->Titre('Réinitialisation du Mot de passe', $class_msg);

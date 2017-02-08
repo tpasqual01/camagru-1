@@ -7,6 +7,7 @@ require_once('header.php');
 $CForm = new CForm;
 
 $aff_formulaire = 'yes';
+print '....'.$_POST['Question'].'<br>';
 
 if (isset($_POST['Envoyer']) == TRUE) // controle des champs
 	{
@@ -23,7 +24,7 @@ if (isset($_POST['Envoyer']) == TRUE) // controle des champs
 if (isset($_POST['Envoyer']) == TRUE and !$error_field )
 	{
 		$CSession = new CSession();
-		$user_exist = $CSession->user_exist();
+		$user_exist = $CSession->user_exist($_POST['email']);
 		$CInscription = new CInscription();
 		$CPrint = new CPrint();
 
@@ -99,7 +100,7 @@ if ( $aff_formulaire == 'yes' )
 	$Tabquestion[] = "Votre nom de jeune fille";
 	$Tabquestion[] = "Votre sport favori";*/
 	$TabForm[] = $CForm->InputLabel("Question secrète *", "LabelQuestion", "Notused");
-	$TabForm[] = $CForm->InputSelect("Question secrète ", "Question", $Tabquestion, '3', '*');
+	$TabForm[] = $CForm->InputSelect("Question secrète ", "Question", $Tabquestion, '0', '*');
 	$TabForm[] = $CForm->InputLabel("Réponse *", "LabelReponse", "Notused");
 	$TabForm[] = $CForm->InputText("Reponse", "Reponse", $_POST['Reponse'], '*');
 
